@@ -1,0 +1,8 @@
+Game sẽ chơi liên tục không ngừng cho tới khi các ô vượt lố hàng trên cùng của bảng
+Task:
+- Interface:
+	+ tạo ra giao diện bảng (1 class Board)
+	+ tạo ra abstract class block (các class Iblock,L,J,T,O,S,Z kế thừa block này)
+	+ menu bảng chọn 
+	+ màn hình khi thua 
+	+ bảng hiển thị thông tin người chơi
