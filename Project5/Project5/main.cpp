@@ -252,7 +252,7 @@ GameState gameWonScreen(RenderWindow& window) {
 int main()
 {
 
-    RenderWindow window(VideoMode(710, 850), "Tertis", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(710, 850), "Tetris", Style::Titlebar | Style::Close);
 
     GameState gameState = GameState::TitleScreen;
 
@@ -263,7 +263,7 @@ int main()
             gameState = titleScreen(window);
             break;
         case GameState::Playing:
-            gameState = playTertis(window);
+            gameState = playTetris(window);
             break;
         case GameState::GameOver:
             gameState = gameOverScreen(window);
