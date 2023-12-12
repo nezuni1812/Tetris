@@ -16,15 +16,63 @@ bool Tetriminos::isCollided(vector<vector<bool>> board, int _x, int _y, int _cur
     return false;
 }
 
-void Tetriminos::ClockWiseRotate(vector<vector<bool>> board) {
-    int _currentState = currentState + 1;
+void Tetriminos::InitWallKick(int type) {
+    wallKickCase.resize(4);
+    
+    for (int i = 0; i < wallKickCase.size(); i++) {
+        wallKickCase[i].resize(4);
+    }
+    
+    if (type == 0){
+        wallKickCase[0][1]  =  {make_pair(0, 0), make_pair(0, -1), make_pair( 1, -1), make_pair(-2, 0), make_pair(-2, -1)};
+        wallKickCase[1][0]  =  {make_pair(0, 0), make_pair(0,  1), make_pair(-1,  1), make_pair( 2, 0), make_pair( 2,  1)};
+        wallKickCase[1][2]  =  {make_pair(0, 0), make_pair(0,  1), make_pair(-1,  1), make_pair( 2, 0), make_pair( 2,  1)};
+        wallKickCase[2][1]  =  {make_pair(0, 0), make_pair(0, -1), make_pair( 1, -1), make_pair(-2, 0), make_pair(-2, -1)};
+        wallKickCase[2][3]  =  {make_pair(0, 0), make_pair(0,  1), make_pair( 1,  1), make_pair(-2, 0), make_pair(-2,  1)};
+        wallKickCase[3][2]  =  {make_pair(0, 0), make_pair(0, -1), make_pair(-1, -1), make_pair( 2, 0), make_pair( 2, -1)};
+        wallKickCase[3][0]  =  {make_pair(0, 0), make_pair(0, -1), make_pair(-1, -1), make_pair( 2, 0), make_pair( 2, -1)};
+        wallKickCase[0][3]  =  {make_pair(0, 0), make_pair(0,  1), make_pair( 1,  1), make_pair(-2, 0), make_pair(-2,  1)};
+    }
+    else {
+        wallKickCase[0][1] = {make_pair(0, 0), make_pair(0, -2), make_pair(0,  1), make_pair(-1, -2), make_pair( 2,  1)};
+        wallKickCase[1][0] = {make_pair(0, 0), make_pair(0,  2), make_pair(0, -1), make_pair( 1,  2), make_pair(-2, -1)};
+        wallKickCase[1][2] = {make_pair(0, 0), make_pair(0, -1), make_pair(0,  2), make_pair( 2, -1), make_pair(-1,  2)};
+        wallKickCase[2][1] = {make_pair(0, 0), make_pair(0,  1), make_pair(0, -2), make_pair(-2,  1), make_pair( 1, -2)};
+        wallKickCase[2][3] = {make_pair(0, 0), make_pair(0,  2), make_pair(0, -1), make_pair( 1,  2), make_pair(-2, -1)};
+        wallKickCase[3][2] = {make_pair(0, 0), make_pair(0, -2), make_pair(0,  1), make_pair(-1, -2), make_pair( 2,  1)};
+        wallKickCase[3][0] = {make_pair(0, 0), make_pair(0,  1), make_pair(0, -2), make_pair(-2,  1), make_pair( 1, -2)};
+        wallKickCase[0][3] = {make_pair(0, 0), make_pair(0, -1), make_pair(0,  2), make_pair( 2, -1), make_pair(-1,  2)};
+    }
+    
+}
+
+void Tetriminos::Rotate(vector<vector<bool>> board, bool clockWise) {
+    int _currentState;
+    if (clockWise)
+        _currentState = currentState + 1;
+    else
+        _currentState = currentState + states.size() - 1;
+        
     _currentState %= states.size();
     
-    bool checkCollision = isCollided(board, x, y, _currentState);
+    bool checkCollision;
+    int i;
+    for (i = 0; i < wallKickCase[currentState][_currentState].size(); i++) {
+        int offSetY = wallKickCase[currentState][_currentState][i].first;
+        int offSetX = wallKickCase[currentState][_currentState][i].second;
+        cout << "Offset: " << offSetY << " " << offSetX << endl;
+        checkCollision = isCollided(board, x + offSetX, y - offSetY, _currentState);
+        cout << "End of check " << checkCollision << "\n";
+        if (!checkCollision)
+            break;
+    }
     
     if (checkCollision)
         return ;
     
+    cout << wallKickCase[currentState][_currentState][i].first << wallKickCase[currentState][_currentState][i].second << endl;
+    y = y - wallKickCase[currentState][_currentState][i].first;
+    x = x + wallKickCase[currentState][_currentState][i].second;
     currentState = _currentState;
 }; 
 
