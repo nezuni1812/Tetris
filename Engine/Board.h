@@ -12,7 +12,8 @@ class Board{
         int cellSize;
         const int HEIGHT = 20;
         const int WIDTH = 10;
-        Tetriminos* b = new Z;
+        Tetriminos* b = new T;
+        void moveRowDown(int row, int rows);
     public:
         Board();
         vector<vector<bool>> board;
@@ -22,6 +23,11 @@ class Board{
         void newTetriminos();
         bool isCollied(vector<pair<int,int>>);
         void update();
+        
+        void clearRow(int row);
+        bool isRowFull(int row);
+        void clearFullRows();
+        
 };
 
 Board::Board(){
@@ -79,7 +85,7 @@ void Board::draw(){
 void Board::newTetriminos() {
     if (b)
         delete b;
-        
+    srand(time(0));  
     int val = rand()% 6;
     
     switch (val)
@@ -131,7 +137,7 @@ bool Board::isCollied(vector<pair<int,int>> pos){
 
 void Board::update(){
     int n;
-    cout << "(1) for Left, (3) for Right, (5) to Transform: ";
+    cout << "(1) for Left, (3) for Right, (5) to Transform clockwise, (6) to Transform anti clock wise: ";
     cin >> n;
     
     bool result;
@@ -200,11 +206,47 @@ void Board::update(){
         vector<pair<int,int>> pos = b->GetAllPoints();
         for (int i = 0; i < pos.size(); i++)
             board[pos[i].first][pos[i].second] = true;
-        newTetriminos();
+        newTetriminos(); 
     }
     
-    cout << b->y << "+" << b->x << endl;
+    //cout << b->y << "+" << b->x << endl;
     
 }
 
 
+//clear row 
+void Board::clearRow(int row){
+    for(int col = 0; col < cols; col++)
+        board[row][col] = 0;
+}
+
+//check if a row is full of blocks or not
+bool Board::isRowFull(int row){
+    for(int col = 0; col < cols; col++)
+        if(board[row][col] == 0)
+            return false;
+    return true;
+}
+
+//remove the above row after a row is deleted
+void Board::moveRowDown(int row, int rows){
+    for(int col = 0; col < cols; col++){
+        board[row + rows][col] = board[row][col];
+        board[row][col] = 0;
+    }
+}
+
+//delete a row using all 3 functions above
+void Board::clearFullRows(){
+    int completed = 0;
+    for(int row = row - 1; row >=0; row--){
+        if(isRowFull(row)){
+            clearRow(row);
+            completed++;
+            cout << "number of rows deleted: " << completed << endl;
+        }
+        else if(completed > 0){
+            moveRowDown(row, completed);
+        }
+    }
+}
