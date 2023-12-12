@@ -252,7 +252,11 @@ GameState gameWonScreen(RenderWindow& window) {
 int main()
 {
 
+<<<<<<< Updated upstream
     RenderWindow window(VideoMode(710, 850), "Tetris", Style::Titlebar | Style::Close);
+=======
+    RenderWindow window(VideoMode(750, 850), "Tertis", Style::Titlebar | Style::Close);
+>>>>>>> Stashed changes
 
     GameState gameState = GameState::TitleScreen;
 

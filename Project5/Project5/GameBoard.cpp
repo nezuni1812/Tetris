@@ -82,7 +82,7 @@ void GameBoard::draw(RenderWindow& window) {
 void GameBoard::drawBlocks(RenderWindow& window) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            blocks[bufferRows + i][j].setPosition(xAxisBlockDrawOffset + j * spriteBlockSize, i * spriteBlockSize);
+            blocks[bufferRows + i][j].setPosition(xAxisBlockDrawOffset + j * spriteBlockSize, + i * spriteBlockSize);
             window.draw(blocks[bufferRows + i][j]);
         }
     }

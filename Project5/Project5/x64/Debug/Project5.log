@@ -1,9 +1,14 @@
 ﻿  GameBoard.cpp
+<<<<<<< Updated upstream
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\GameBoard.cpp(85,97): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+=======
+C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\GameBoard.cpp(85,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+>>>>>>> Stashed changes
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\GameBoard.cpp(85,72): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\GameBoard.cpp(98,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\GameBoard.cpp(113,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\GameBoard.cpp(128,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+<<<<<<< Updated upstream
   main.cpp
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\main.cpp(59,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\main.cpp(266,25): error C3861: 'playTetris': identifier not found
@@ -11,3 +16,6 @@ C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\Tetromino.cpp(73,118): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\Project5\Tetromino.cpp(73,65): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating Code...
+=======
+  Project5.vcxproj -> C:\Users\Uyen Nhi\OneDrive - VNU-HCMUS\Documents\GitHub\Tetris\Project5\x64\Debug\Project5.exe
+>>>>>>> Stashed changes
