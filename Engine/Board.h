@@ -178,7 +178,16 @@ void Board::update(){
                 else b->cannotGoDown = true;
             }
             break;
-            
+        case 6:
+            cout << "Flip anti clock wise\n";
+            if (!isCollied(b->AntiClockWiseRotate(true)))
+                b->AntiClockWiseRotate();
+            else {
+                if (!isCollied(b->GoDown(true)))
+                    b->GoDown();
+                else b->cannotGoDown = true;
+            }
+            break;
         default:
             if (!isCollied(b->GoDown(true)))
                 b->GoDown();
