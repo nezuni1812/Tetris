@@ -12,46 +12,16 @@ public:
     vector<vector<vector<bool>>> states;
     bool cannotGoDown = false;
     
-    virtual vector<pair<int,int>> ClockWiseRotate(bool isTest = false) = 0; 
-    virtual vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) = 0;
-    virtual vector<pair<int,int>> GoDown(bool isTest = false) = 0;
-    vector<pair<int,int>> GoLeft(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        cout << "Went left\n";
-        int _x = x - 1, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-        else
-            cout << "Go left\n";
-            x = _x; y = _y;
-            return GetAllPoints();
-    }; 
-    vector<pair<int,int>> GoRight(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        int _x = x + 1, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-            
-        cout << "Go right\n";
-        x = _x; y = _y;
-        return GetAllPoints();
-    };  
+    bool isCollided(vector<vector<bool>> board, int _x, int _y, int _currentState);
     
-    vector<pair<int,int>> GetAllPoints(int _x = -100, int _y = -100, int _currentState = -100) {
-        if (_x == -100) {
-            _x = this->x;
-            _y = this->y;
-            _currentState = this->currentState;
-        }
-        
-        vector<pair<int,int>> points;
-        for (int i = 0; i < states[_currentState].size(); i++)
-        for (int j = 0; j < states[_currentState][0].size(); j++)
-            if (states[_currentState][i][j])
-                points.push_back(make_pair(_y + i, _x + j));
-                
-        return points;
-    }
+    void ClockWiseRotate(vector<vector<bool>> board);
+    
+    virtual vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) = 0;
+    bool GoDown(vector<vector<bool>> board);
+    bool GoLeft(vector<vector<bool>> board);
+    bool GoRight(vector<vector<bool>> board);
+    
+    vector<pair<int,int>> GetAllPoints(int _x, int _y, int _currentState);
 };
 
 class O: public Tetriminos {
@@ -68,17 +38,7 @@ public:
             states[i] = states[0];
     }
     
-    vector<pair<int,int>> ClockWiseRotate(bool isTest = false) {};
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
-    vector<pair<int,int>> GoDown(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        int _x = x, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-        
-        x = _x; y = _y;
-        return GetAllPoints();
-    };
 };
 
 class I: public Tetriminos {
@@ -113,27 +73,7 @@ public:
                     };        
     }
     
-    vector<pair<int,int>> ClockWiseRotate(bool isTest = false) {
-        int _currentState = currentState + 1;
-        _currentState %= states.size();
-        
-        if (isTest)
-            return GetAllPoints(x, y + 1, _currentState);
-        
-        currentState = _currentState;
-        y++;
-        return GetAllPoints(x, y, currentState);
-    }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
-    vector<pair<int,int>> GoDown(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        int _x = x, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-        
-        x = _x; y = _y;
-        return GetAllPoints();
-    }
 };
 
 class L: public Tetriminos {
@@ -165,27 +105,7 @@ public:
                     };        
     }
     
-    vector<pair<int,int>> ClockWiseRotate(bool isTest = false) {
-        int _currentState = currentState + 1;
-        _currentState %= states.size();
-        
-        if (isTest)
-            return GetAllPoints(x, y + 1, _currentState);
-        
-        currentState = _currentState;
-        y++;
-        return GetAllPoints(x, y, currentState);
-    }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
-    vector<pair<int,int>> GoDown(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        int _x = x, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-        
-        x = _x; y = _y;
-        return GetAllPoints();
-    };
 };
 
 
@@ -217,27 +137,7 @@ public:
                     };        
     }
     
-    vector<pair<int,int>> ClockWiseRotate(bool isTest = false) {
-        int _currentState = currentState + 1;
-        _currentState %= states.size();
-        
-        if (isTest)
-            return GetAllPoints(x, y + 1, _currentState);
-        
-        currentState = _currentState;
-        y++;
-        return GetAllPoints(x, y, currentState);
-    }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
-    vector<pair<int,int>> GoDown(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        int _x = x, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-        
-        x = _x; y = _y;
-        return GetAllPoints();
-    };
 };
 
 class T: public Tetriminos {
@@ -268,27 +168,7 @@ public:
                     };        
     }
     
-    vector<pair<int,int>> ClockWiseRotate(bool isTest = false) {
-        int _currentState = currentState + 1;
-        _currentState %= states.size();
-        
-        if (isTest)
-            return GetAllPoints(x, y + 1, _currentState);
-        
-        currentState = _currentState;
-        y++;
-        return GetAllPoints(x, y, currentState);
-    }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
-    vector<pair<int,int>> GoDown(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        int _x = x, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-        
-        x = _x; y = _y;
-        return GetAllPoints();
-    };
 };
 
 
@@ -321,25 +201,5 @@ public:
     }
     
     
-    vector<pair<int,int>> ClockWiseRotate(bool isTest = false) {
-        int _currentState = currentState + 1;
-        _currentState %= states.size();
-        
-        if (isTest)
-            return GetAllPoints(x, y + 1, _currentState);
-        
-        currentState = _currentState;
-        y++;
-        return GetAllPoints(x, y, currentState);
-    }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
-    vector<pair<int,int>> GoDown(bool isTest = false) {
-        // When isTest is true -> does not update x and y values to test if there is no collision
-        int _x = x, _y = y + 1;
-        if (isTest)
-            return GetAllPoints(_x, _y, currentState);
-        
-        x = _x; y = _y;
-        return GetAllPoints();
-    };
 };
