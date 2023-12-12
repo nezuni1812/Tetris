@@ -10,9 +10,11 @@ public:
     int currentState = 0;
     int x = -1, y = -1;
     vector<vector<vector<bool>>> states;
+    bool cannotGoDown = false;
     
     virtual vector<pair<int,int>> ClockWiseRotate(bool isTest = false) = 0; 
     virtual vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) = 0;
+    virtual vector<pair<int,int>> GoDown(bool isTest = false) = 0;
     vector<pair<int,int>> GoLeft(bool isTest = false) {
         // When isTest is true -> does not update x and y values to test if there is no collision
         cout << "Went left\n";
@@ -29,10 +31,10 @@ public:
         int _x = x + 1, _y = y + 1;
         if (isTest)
             return GetAllPoints(_x, _y, currentState);
-        else
-            cout << "Go right\n";
-            x = _x; y = _y;
-            return GetAllPoints();
+            
+        cout << "Go right\n";
+        x = _x; y = _y;
+        return GetAllPoints();
     };  
     
     vector<pair<int,int>> GetAllPoints(int _x = -100, int _y = -100, int _currentState = -100) {
@@ -68,6 +70,15 @@ public:
     
     vector<pair<int,int>> ClockWiseRotate(bool isTest = false) {};
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
+    vector<pair<int,int>> GoDown(bool isTest = false) {
+        // When isTest is true -> does not update x and y values to test if there is no collision
+        int _x = x, _y = y + 1;
+        if (isTest)
+            return GetAllPoints(_x, _y, currentState);
+        
+        x = _x; y = _y;
+        return GetAllPoints();
+    };
 };
 
 class I: public Tetriminos {
@@ -114,6 +125,15 @@ public:
         return GetAllPoints(x, y, currentState);
     }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
+    vector<pair<int,int>> GoDown(bool isTest = false) {
+        // When isTest is true -> does not update x and y values to test if there is no collision
+        int _x = x, _y = y + 1;
+        if (isTest)
+            return GetAllPoints(_x, _y, currentState);
+        
+        x = _x; y = _y;
+        return GetAllPoints();
+    }
 };
 
 class L: public Tetriminos {
@@ -157,6 +177,15 @@ public:
         return GetAllPoints(x, y, currentState);
     }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
+    vector<pair<int,int>> GoDown(bool isTest = false) {
+        // When isTest is true -> does not update x and y values to test if there is no collision
+        int _x = x, _y = y + 1;
+        if (isTest)
+            return GetAllPoints(_x, _y, currentState);
+        
+        x = _x; y = _y;
+        return GetAllPoints();
+    };
 };
 
 
@@ -200,6 +229,15 @@ public:
         return GetAllPoints(x, y, currentState);
     }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
+    vector<pair<int,int>> GoDown(bool isTest = false) {
+        // When isTest is true -> does not update x and y values to test if there is no collision
+        int _x = x, _y = y + 1;
+        if (isTest)
+            return GetAllPoints(_x, _y, currentState);
+        
+        x = _x; y = _y;
+        return GetAllPoints();
+    };
 };
 
 class T: public Tetriminos {
@@ -242,6 +280,15 @@ public:
         return GetAllPoints(x, y, currentState);
     }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
+    vector<pair<int,int>> GoDown(bool isTest = false) {
+        // When isTest is true -> does not update x and y values to test if there is no collision
+        int _x = x, _y = y + 1;
+        if (isTest)
+            return GetAllPoints(_x, _y, currentState);
+        
+        x = _x; y = _y;
+        return GetAllPoints();
+    };
 };
 
 
@@ -286,4 +333,13 @@ public:
         return GetAllPoints(x, y, currentState);
     }; 
     vector<pair<int,int>> AntiClockWiseRotate(bool isTest = false) {};
+    vector<pair<int,int>> GoDown(bool isTest = false) {
+        // When isTest is true -> does not update x and y values to test if there is no collision
+        int _x = x, _y = y + 1;
+        if (isTest)
+            return GetAllPoints(_x, _y, currentState);
+        
+        x = _x; y = _y;
+        return GetAllPoints();
+    };
 };
