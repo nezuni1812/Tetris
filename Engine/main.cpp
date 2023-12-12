@@ -1,4 +1,4 @@
-#include "board.cpp"
+#include "Board.cpp"
 
 int main(){
     Board board = Board();

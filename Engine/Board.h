@@ -12,7 +12,7 @@ class Board{
         int cellSize;
         const int HEIGHT = 20;
         const int WIDTH = 10;
-        Tetriminos* b = new O;
+        Tetriminos* b = new T;
     public:
         Board();
         vector<vector<bool>> board;
@@ -53,21 +53,24 @@ void Board::print(){
 void Board::draw(){
     vector<vector<bool>> toDraw(20, vector<bool>(10, 0));
 
+    // Transfer all points in board to toDraw matrix 
     for(int i = 0; i < 20; i++){
         for(int j = 0; j < 10; j++)
             if(board[i][j] == 1)
                 toDraw[i][j] = 1;
     }
     
+    // Transfer all points in block b to toDraw matrix
     vector<pair<int,int>> pos = b->GetAllPoints();
     for (int i = 0; i < pos.size(); i++) {
         // cout << pos[i].first << " & " << pos[i].second << endl;
         toDraw[pos[i].first][pos[i].second] = true;
     }
 
+    // Paint the toDraw matrix out
     for(int i = 0; i < 20; i++){
         for(int j = 0; j < 10; j++)
-            cout << toDraw[i][j];
+            cout << " ."[j == 0] << (toDraw[i][j] ? "#" : " ") << " ."[j == 9];
         cout << endl;
     }
 }
@@ -102,6 +105,11 @@ void Board::update(){
             if (!isCollied(b->GoRight(true))){
                 b->GoRight();
             }
+            break;
+        case 5:
+            cout << "Flip clock wise\n";
+            if (!isCollied(b->ClockWiseRotate(true)))
+                b->ClockWiseRotate();
             break;
     }
     
