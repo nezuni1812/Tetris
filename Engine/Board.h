@@ -1,7 +1,7 @@
 #pragma once
 
 #include <bits/stdc++.h>
-#include "Block.h"
+#include "Block.cpp"
 
 using namespace std;
 
@@ -12,8 +12,10 @@ class Board{
         int cellSize;
         const int HEIGHT = 20;
         const int WIDTH = 10;
+
         Tetriminos* b = new T;
         void moveRowDown(int row, int rows);
+
     public:
         Board();
         vector<vector<bool>> board;
@@ -70,7 +72,6 @@ void Board::draw(){
     // Transfer all points in block b to toDraw matrix
     vector<pair<int,int>> pos = b->GetAllPoints();
     for (int i = 0; i < pos.size(); i++) {
-        // cout << pos[i].first << " & " << pos[i].second << endl;
         toDraw[pos[i].first][pos[i].second] = true;
     }
 
@@ -144,46 +145,19 @@ void Board::update(){
     switch (n) {
         case 1:
             cout << "Case 1\n";
-            if (!isCollied(b->GoLeft(true))){
-                b->GoLeft();
-            }
-            else {
-                if (!isCollied(b->GoDown(true)))
-                    b->GoDown();
-                else b->cannotGoDown = true;
-            }
+            b->GoLeft(board);
             break;
             
         case 3:
             cout << "Case 3\n";
-            if (!isCollied(b->GoRight(true))){
-                b->GoRight();
-            }
-            else {
-                cout << "About to return value\n";
-                bool res = isCollied(b->GoDown(true));
-                cout << "Check if go down " << res << endl;
-                if (!res) {
-                    b->GoDown();
-                }
-                else {
-                    cout << "Set cannot go down\n";
-                    b->cannotGoDown = true;
-                }
-                cout << "Out of case 3\n";
-            }
+            b->GoRight(board);
             break;
             
         case 5:
             cout << "Flip clock wise\n";
-            if (!isCollied(b->ClockWiseRotate(true)))
-                b->ClockWiseRotate();
-            else {
-                if (!isCollied(b->GoDown(true)))
-                    b->GoDown();
-                else b->cannotGoDown = true;
-            }
+            b->ClockWiseRotate(board);
             break;
+
         case 6:
             cout << "Flip anti clock wise\n";
             if (!isCollied(b->AntiClockWiseRotate(true)))
@@ -198,7 +172,12 @@ void Board::update(){
             if (!isCollied(b->GoDown(true)))
                 b->GoDown();
             else b->cannotGoDown = true;
+
     }
+    
+    if (true)
+        if (!b->GoDown(board))
+            b->cannotGoDown = true;
     
     // If the Tetriminos cannot go down anymore -> Merge it with the board
     if (b->cannotGoDown) {
