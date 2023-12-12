@@ -23,7 +23,6 @@ class Board{
         void print();
         void draw();
         void newTetriminos();
-        bool isCollied(vector<pair<int,int>>);
         void update();
         
         void clearRow(int row);

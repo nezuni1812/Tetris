@@ -89,21 +89,6 @@ void Board::newTetriminos() {
     
 }
 
-bool Board::isCollied(vector<pair<int,int>> pos){
-    for (int i = 0; i < pos.size(); i++) {
-        cout << pos[i].first << ", " << pos[i].second << endl;
-        if (pos[i].first >= HEIGHT || pos[i].first < 0 || 
-            pos[i].second >= WIDTH || pos[i].second < 0 ||
-            board[pos[i].first][pos[i].second] != 0) {
-                cout << "Cant go\n";
-                return true;
-            }
-    }
-            
-    return false;
-    
-}
-
 void Board::update(){
     int n;
     cout << "(1) for Left, (3) for Right, (5) to Transform clockwise, (6) to Transform anti clock wise: ";
@@ -145,6 +130,9 @@ void Board::update(){
             board[pos[i].first][pos[i].second] = true;
         newTetriminos(); 
     }
+    
+    cout << "Check for Full rows\n";
+    clearFullRows();
 }
 
 
