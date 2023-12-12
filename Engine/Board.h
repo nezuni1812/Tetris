@@ -85,6 +85,7 @@ bool Board::isCollied(vector<pair<int,int>> pos){
             }
             
     return false;
+    
 }
 
 void Board::update(){
