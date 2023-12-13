@@ -46,7 +46,7 @@ void Board::draw(){
     // Paint the toDraw matrix out
     for(int i = 0; i < 20; i++){
         for(int j = 0; j < 10; j++)
-            cout << (j == 0 ? "." : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : "");
+            cout << (j == 0 ? "0" : "") << (toDraw[i][j] ? "1" : " ") << (j == 9 ? "0" : "");
         cout << endl;
     }
 }
@@ -54,7 +54,7 @@ void Board::draw(){
 void Board::newTetriminos() {
     if (b)
         delete b;
-    srand(time(0));  
+    srand(time(NULL));  
     int val = rand()% 6;
     
     switch (val)
@@ -86,21 +86,6 @@ void Board::newTetriminos() {
     default:
         break;
     }
-    
-}
-
-bool Board::isCollied(vector<pair<int,int>> pos){
-    for (int i = 0; i < pos.size(); i++) {
-        cout << pos[i].first << ", " << pos[i].second << endl;
-        if (pos[i].first >= HEIGHT || pos[i].first < 0 || 
-            pos[i].second >= WIDTH || pos[i].second < 0 ||
-            board[pos[i].first][pos[i].second] != 0) {
-                cout << "Cant go\n";
-                return true;
-            }
-    }
-            
-    return false;
     
 }
 
@@ -145,8 +130,10 @@ void Board::update(){
             board[pos[i].first][pos[i].second] = true;
         newTetriminos(); 
     }
+    
+    clearFullRows();
+    //cout << score(lineDeleted) << endl;
 }
-
 
 //clear row 
 void Board::clearRow(int row){
@@ -173,14 +160,31 @@ void Board::moveRowDown(int row, int rows){
 //delete a row using all 3 functions above
 void Board::clearFullRows(){
     int completed = 0;
-    for(int row = row - 1; row >=0; row--){
+    for(int row = rows - 1; row >=0; row--){
         if(isRowFull(row)){
             clearRow(row);
             completed++;
-            cout << "number of rows deleted: " << completed << endl;
         }
         else if(completed > 0){
             moveRowDown(row, completed);
         }
     }
+}
+
+int Board::score(int lineDeleted){
+    int score = 0;
+    switch(lineDeleted){
+        case 1:
+            score += 100;
+            break;
+        case 2:
+            score += 300;
+            break;
+        case 3: 
+            score += 500;
+            break;
+        default:
+            break;
+    }
+    return score;
 }

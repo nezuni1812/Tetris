@@ -13,7 +13,7 @@ class Board{
         const int HEIGHT = 20;
         const int WIDTH = 10;
 
-        Tetriminos* b = new T;
+        Tetriminos* b = new I;
         void moveRowDown(int row, int rows);
 
     public:
@@ -23,11 +23,10 @@ class Board{
         void print();
         void draw();
         void newTetriminos();
-        bool isCollied(vector<pair<int,int>>);
         void update();
         
         void clearRow(int row);
         bool isRowFull(int row);
         void clearFullRows();
-        
+        int score(int lineDeleted);
 };

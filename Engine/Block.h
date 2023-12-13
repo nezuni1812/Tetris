@@ -1,3 +1,7 @@
+#pragma once
+
+#ifndef _TETRIMINO_
+#define _TETRIMINO_
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -198,3 +202,5 @@ public:
                     };        
     }
 };
+
+#endif
