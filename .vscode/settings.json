@@ -6,6 +6,7 @@
         "codecvt": "cpp",
         "xlocale": "cpp",
         "ostream": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "new": "cpp"
     }
 }

@@ -55,7 +55,7 @@ void Board::newTetriminos() {
     if (b)
         delete b;
     srand(time(NULL));  
-    int val = rand()% 6;
+    int val = rand() % 6;
     
     switch (val)
     {
@@ -129,10 +129,14 @@ void Board::update(){
         for (int i = 0; i < pos.size(); i++)
             board[pos[i].first][pos[i].second] = true;
         newTetriminos(); 
+        if(b->isCollided(board, b->x, b->y, b->currentState)){
+            isOver();
+            cout << "Game over" << endl;
+        }
     }
     
-    clearFullRows();
-    //cout << score(lineDeleted) << endl;
+    int lineDeleted = clearFullRows();
+    cout << "Score: " << updateScore(lineDeleted) << endl;
 }
 
 //clear row 
@@ -158,7 +162,7 @@ void Board::moveRowDown(int row, int rows){
 }
 
 //delete a row using all 3 functions above
-void Board::clearFullRows(){
+int Board::clearFullRows(){
     int completed = 0;
     for(int row = rows - 1; row >=0; row--){
         if(isRowFull(row)){
@@ -169,10 +173,10 @@ void Board::clearFullRows(){
             moveRowDown(row, completed);
         }
     }
+    return completed;
 }
 
-int Board::score(int lineDeleted){
-    int score = 0;
+int Board::updateScore(int lineDeleted){
     switch(lineDeleted){
         case 1:
             score += 100;
@@ -187,4 +191,10 @@ int Board::score(int lineDeleted){
             break;
     }
     return score;
+}
+
+bool Board::isOver(){
+    if(b->cannotGoDown && b->x == 0)
+        return true;
+    return false;
 }
