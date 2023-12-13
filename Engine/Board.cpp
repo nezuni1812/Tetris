@@ -6,6 +6,13 @@ Board::Board(){
     cellSize = 30;
     
     board = vector<vector<bool>>(20, (vector<bool>(10, 0)));
+    
+    // For testing S spin
+    board[15] = {1, 1, 1, 1, 1, 1, 0, 0, 1, 1};
+    board[16] = {1, 1, 1, 1, 0, 0, 0, 0, 1, 1};
+    board[17] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
+    board[18] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
+    board[19] = {1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
     // createBoard();
 
 }
@@ -46,7 +53,7 @@ void Board::draw(){
     // Paint the toDraw matrix out
     for(int i = 0; i < 20; i++){
         for(int j = 0; j < 10; j++)
-            cout << (j == 0 ? "0" : "") << (toDraw[i][j] ? "1" : " ") << (j == 9 ? "0" : "");
+            cout << (j == 0 ? to_string(i%10) : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : "");
         cout << endl;
     }
 }
@@ -54,8 +61,8 @@ void Board::draw(){
 void Board::newTetriminos() {
     if (b)
         delete b;
-    srand(time(NULL));  
-    int val = rand()% 6;
+    srand(time(0));  
+    int val = rand()% 7;
     
     switch (val)
     {
@@ -72,14 +79,18 @@ void Board::newTetriminos() {
         break;
         
     case 3:
-        b = new S;
+        b = new J;
         break;
         
     case 4:
-        b = new T;
+        b = new S;
         break;
         
     case 5:
+        b = new T;
+        break;
+        
+    case 6:
         b = new Z;
         break;
     
