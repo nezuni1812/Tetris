@@ -106,5 +106,7 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp"
+        "new": "cpp"
+
     }
 }

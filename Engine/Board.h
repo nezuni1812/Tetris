@@ -14,7 +14,7 @@ class Board{
         int updateTime;
         const int HEIGHT = 20;
         const int WIDTH = 10;
-
+        
         Tetriminos* b = new I;
         void moveRowDown(int row, int rows);
 
@@ -29,6 +29,9 @@ class Board{
         
         void clearRow(int row);
         bool isRowFull(int row);
-        void clearFullRows();
-        int score(int lineDeleted);
+        int clearFullRows();
+        int updateScore(int lineDeleted);
+        bool isOver();
+
+        int score = 0;
 };
