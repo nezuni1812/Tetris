@@ -5,7 +5,7 @@ int main(){
     board.draw();
     while (1) {
         board.update();
-        board.draw();
+        board.draw(); 
         cout << endl << endl;
     }
     
