@@ -14,6 +14,75 @@ enum class GameState : int {
 const int MENU_ITEM_COUNT = 4;
 const string MENU_ITEMS[MENU_ITEM_COUNT] = { "PLAY", "Leaderboard", "Instruction", "Exit" };
 
+// Function to display the Play screen
+void displayPlayScreen(sf::RenderWindow& window) {
+    // Load and display the "Play" screen image
+    sf::Texture playScreenTexture;
+    playScreenTexture.loadFromFile("Resources/play_screen.png");
+    sf::Sprite playScreen(playScreenTexture);
+    window.draw(playScreen);
+    window.display();
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            else if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
+// Function to display the Instruction screen
+void displayInstructionScreen(sf::RenderWindow& window) {
+    // Load and display the "Instruction" screen image
+    sf::Texture instructionScreenTexture;
+    instructionScreenTexture.loadFromFile("Resources/instruction.png");
+    sf::Sprite instructionScreen(instructionScreenTexture);
+    window.draw(instructionScreen);
+    window.display();
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            else if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
+// Function to display the Leaderboard screen
+void displayLeaderboardScreen(sf::RenderWindow& window) {
+    // Load and display the "Leaderboard" screen image
+    sf::Texture leaderboardScreenTexture;
+    leaderboardScreenTexture.loadFromFile("Resources/leaderboard.png");
+    sf::Sprite leaderboardScreen(leaderboardScreenTexture);
+    window.draw(leaderboardScreen);
+    window.display();
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            else if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
 void titleScreen(RenderWindow& window) {
     Texture* titleScreenTexture = new Texture();
     titleScreenTexture->loadFromFile("Resources/menu.png");
@@ -68,13 +137,13 @@ void titleScreen(RenderWindow& window) {
                     // Perform action based on the selected item
                     switch (selectedItem) {
                     case 0:
-                        std::cout << "Play selected!" << std::endl;
+                        displayPlayScreen(window);
                         break;
                     case 1:
-                        std::cout << "Instruction selected!" << std::endl;
+                        displayLeaderboardScreen(window);
                         break;
                     case 2:
-                        std::cout << "Leaderboard selected!" << std::endl;
+                        displayInstructionScreen(window);
                         break;
                     case 3:
                         std::cout << "Exit selected!" << std::endl;
