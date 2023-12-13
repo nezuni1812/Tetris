@@ -3,6 +3,7 @@
 #ifndef _TETRIMINO_
 #define _TETRIMINO_
 #include <bits/stdc++.h>
+#include <chrono>
 
 using namespace std;
 class Tetriminos {
@@ -11,8 +12,9 @@ private:
     const int WIDTH = 10;
     vector<vector<vector<pair<int, int>>>> wallKickCase;
 public:
-    Tetriminos(int x, int y) : x(x), y(y) {};
-    int currentState = 0;
+    unsigned long long lastUpdate;
+    Tetriminos(int x, int y);
+    int currentRotation = 0;
     int x = -1, y = -1;
     vector<vector<vector<bool>>> states;
     bool cannotGoDown = false;
@@ -21,7 +23,9 @@ public:
     
     bool isCollided(vector<vector<bool>> board, int _x, int _y, int _currentState);
     
-    
+    uint64_t timeSinceEpochMillisec();
+    void LastUpdate();
+    bool Continue(vector<vector<bool>> board);
     void Rotate(vector<vector<bool>> board, bool clockWise);
     bool GoDown(vector<vector<bool>> board);
     bool GoLeft(vector<vector<bool>> board);
@@ -76,6 +80,37 @@ public:
                     {0, 0, 1, 0},
                     {0, 0, 1, 0},
                     {0, 0, 1, 0},
+                    };        
+    }
+};
+
+class J: public Tetriminos {
+public:
+    J(int x = 4, int y = 0) : Tetriminos(x, y) {
+        InitWallKick(0);
+        states.resize(4);
+        
+        states[0] = {
+                    {1, 0, 0},
+                    {1, 1, 1},
+                    {0, 0, 0},
+                    };
+                    
+        states[1] = {
+                    {0, 1, 1},
+                    {0, 1, 0},
+                    {0, 1, 0},
+                    };
+        states[2] = {
+                    {0, 0, 0},
+                    {1, 1, 1},
+                    {0, 0, 1},
+                    };
+                    
+        states[3] = {
+                    {0, 1, 0},
+                    {0, 1, 0},
+                    {1, 1, 0},
                     };        
     }
 };
