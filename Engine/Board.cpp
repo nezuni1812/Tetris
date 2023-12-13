@@ -1,4 +1,4 @@
-#include "board.h"
+#include "Board.h"
 
 Board::Board(){
     rows = 20;
@@ -8,11 +8,11 @@ Board::Board(){
     board = vector<vector<bool>>(20, (vector<bool>(10, 0)));
     
     // For testing S spin
-    board[15] = {1, 1, 1, 1, 1, 1, 0, 0, 1, 1};
-    board[16] = {1, 1, 1, 1, 0, 0, 0, 0, 1, 1};
-    board[17] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
-    board[18] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
-    board[19] = {1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
+    // board[15] = {1, 1, 1, 1, 1, 1, 0, 0, 1, 1};
+    // board[16] = {1, 1, 1, 1, 0, 0, 0, 0, 1, 1};
+    // board[17] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
+    // board[18] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
+    // board[19] = {1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
     // createBoard();
 
 }
@@ -30,11 +30,12 @@ void Board::print(){
     //     for(int col = 0; col < cols; col++){
     //         cout << board[row][col];
     //     }
-    //     cout << endl;
+    //     cout << "\n";
     // }
 }
 
 void Board::draw(){
+    system("cls");
     vector<vector<bool>> toDraw(20, vector<bool>(10, 0));
 
     // Transfer all points in board to toDraw matrix 
@@ -54,8 +55,10 @@ void Board::draw(){
     for(int i = 0; i < 20; i++){
         for(int j = 0; j < 10; j++)
             cout << (j == 0 ? to_string(i%10) : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : "");
-        cout << endl;
+        cout << "\n";
     }
+    
+    cout << "\n";
 }
 
 void Board::newTetriminos() {
@@ -102,24 +105,38 @@ void Board::newTetriminos() {
 
 void Board::update(){
     int n;
-    cout << "(1) for Left, (3) for Right, (5) to Transform clockwise, (6) to Transform anti clock wise: ";
-    cin >> n;
+    // cout << "(1) for Left, (3) for Right, (5) to Transform clockwise, (6) to Transform anti clock wise: ";
+    int key = -1;
+            
+    // A non blocking input (If there is no input -> skip and go to next line)
+    if (_kbhit()){
+        key = _getch();
+        // cout << "Key: " << key << "\n";
+    }
+    
+    if (key == 0 || key == 224)
+        key = _getch();
     
     bool result;
-    switch (n) {
-        case 1:
+    switch (key) {
+        case 75:
             cout << "Case 1\n";
             b->GoLeft(board);
             break;
             
-        case 3:
+        case 77:
             cout << "Case 3\n";
             b->GoRight(board);
             break;
             
-        case 5:
+        case 72:
             cout << "Flip clock wise\n";
             b->Rotate(board, 1);
+            break;
+            
+        case 80:
+            cout << "Go down\n";
+            b->GoDown(board);
             break;
 
         case 6:
@@ -129,12 +146,12 @@ void Board::update(){
 
     }
     
-    if (true)
-        if (!b->GoDown(board))
-            b->cannotGoDown = true;
-    
+    bool reDraw = b->Continue(board);
+    // if (reDraw)
+    //     cin >> reDraw;
+            
     // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetrimino
-    if (b->cannotGoDown) {
+    if (reDraw && b->cannotGoDown) {
         cout << "Creating new block\n";
         vector<pair<int,int>> pos = b->GetAllPoints();
         for (int i = 0; i < pos.size(); i++)
@@ -143,7 +160,12 @@ void Board::update(){
     }
     
     clearFullRows();
-    //cout << score(lineDeleted) << endl;
+    
+    if (b->timeSinceEpochMillisec() - updateTime > 1000) {
+        draw();
+        updateTime = b->timeSinceEpochMillisec();
+    }
+    //cout << score(lineDeleted) << "\n";
 }
 
 //clear row 

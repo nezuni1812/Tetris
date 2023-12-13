@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bits/stdc++.h>
+#include <conio.h>
 #include "Block.cpp"
 
 using namespace std;
@@ -10,6 +11,7 @@ class Board{
         int rows;
         int cols;
         int cellSize;
+        int updateTime;
         const int HEIGHT = 20;
         const int WIDTH = 10;
 

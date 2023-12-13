@@ -1,14 +1,18 @@
 #include "Block.h"
 
+Tetriminos::Tetriminos(int x, int y) : x(x), y(y) {
+    lastUpdate = timeSinceEpochMillisec();
+};
+
 bool Tetriminos::isCollided(vector<vector<bool>> board, int _x, int _y, int _currentState){
     vector<pair<int,int>> pos = GetAllPoints(_x, _y, _currentState);
     
     for (int i = 0; i < pos.size(); i++) {
-        cout << pos[i].first << ", " << pos[i].second << endl;
+        // cout << pos[i].first << ", " << pos[i].second << endl;
         if (pos[i].first >= HEIGHT || pos[i].first < 0 || 
             pos[i].second >= WIDTH || pos[i].second < 0 ||
             board[pos[i].first][pos[i].second] != 0) {
-                cout << "Cant go\n";
+                // cout << "Cant go\n";
                 return true;
             }
     }
@@ -46,6 +50,31 @@ void Tetriminos::InitWallKick(int type) {
     
 }
 
+uint64_t Tetriminos::timeSinceEpochMillisec() {
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
+
+void Tetriminos::LastUpdate() {
+    lastUpdate = timeSinceEpochMillisec();
+}
+
+bool Tetriminos::Continue(vector<vector<bool>> board) {
+    unsigned long long timeNow = timeSinceEpochMillisec();
+    // cout << (timeNow - lastUpdate) << " time has passed\n";
+    if ((timeNow - lastUpdate) < 400)
+        return false;
+        
+    if (!GoDown(board))
+        cannotGoDown = true;
+            
+    lastUpdate = timeSinceEpochMillisec();
+    // cout << "Updated time\n";
+    // int n;
+    // cin >> n;
+    return true;
+}
+
 void Tetriminos::Rotate(vector<vector<bool>> board, bool clockWise) {
     int nextRotation;
     if (clockWise)
@@ -77,8 +106,9 @@ void Tetriminos::Rotate(vector<vector<bool>> board, bool clockWise) {
 bool Tetriminos::GoDown(vector<vector<bool>> board) {
     int _x = x, _y = y + 1;
     
-    if (isCollided(board, _x, _y, currentRotation))
+    if (isCollided(board, _x, _y, currentRotation)) {
         return false;
+    }
     
     x = _x; y = _y;
     return true;
