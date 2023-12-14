@@ -40,13 +40,13 @@ void displayPlayScreen(sf::RenderWindow& window) {
     vector<sf::Texture> blockTexture;
     blockTexture.resize(8);
     blockTexture[0].loadFromFile("Resources/grey.png");
-    blockTexture[1].loadFromFile("Resources/amber.png");
+    blockTexture[1].loadFromFile("Resources/cyan.png");
     blockTexture[2].loadFromFile("Resources/blue.png");
-    blockTexture[3].loadFromFile("Resources/cyan.png");
+    blockTexture[3].loadFromFile("Resources/amber.png");
     blockTexture[4].loadFromFile("Resources/green.png");
-    blockTexture[5].loadFromFile("Resources/yellow.png");
-    blockTexture[6].loadFromFile("Resources/purple.png");
-    blockTexture[7].loadFromFile("Resources/red.png");
+    blockTexture[5].loadFromFile("Resources/purple.png");
+    blockTexture[6].loadFromFile("Resources/red.png");
+    blockTexture[7].loadFromFile("Resources/yellow.png");
     sf::Sprite singleBlock;
 
     while (window.isOpen()) {
