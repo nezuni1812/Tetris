@@ -7,8 +7,19 @@
 using namespace sf;
 using namespace std;
 
-enum class GameState : int {
-    TitleScreen, Playing, GameOver, GameWon, Exit
+class Player {
+private: 
+    string name;
+    int point;
+public:
+    Player() : name(""), point(0) {}
+    Player(string name, int point) : name(name), point(point) {}
+    string getName(){
+        return name;
+    }
+    int getPoint() {
+        return point;
+    }
 };
 
 const int MENU_ITEM_COUNT = 4;
@@ -61,7 +72,7 @@ void displayInstructionScreen(sf::RenderWindow& window) {
 }
 
 // Function to display the Leaderboard screen
-void displayLeaderboardScreen(sf::RenderWindow& window) {
+void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     // Load and display the "Leaderboard" screen image
     sf::Texture leaderboardScreenTexture;
     leaderboardScreenTexture.loadFromFile("Resources/leaderboard.png");
@@ -88,8 +99,11 @@ void titleScreen(RenderWindow& window) {
     titleScreenTexture->loadFromFile("Resources/menu.png");
     Sprite titleScreen(*titleScreenTexture);
 
-    bool startGame = false;
-    bool exit = false;
+
+    //Inline initialize vector
+    Player Player1("Han", 2804);
+    Player Player2("Nhi", 1812);
+    vector<Player> list = { Player1,Player2 };
 
     // Create text objects for menu items
     sf::Text menuTexts[MENU_ITEM_COUNT];
@@ -140,7 +154,7 @@ void titleScreen(RenderWindow& window) {
                         displayPlayScreen(window);
                         break;
                     case 1:
-                        displayLeaderboardScreen(window);
+                        displayLeaderboardScreen(window, list);
                         break;
                     case 2:
                         displayInstructionScreen(window);
