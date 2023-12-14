@@ -30,8 +30,7 @@ void Board::print(){
     // }
 }
 
-void Board::draw(){
-    system("cls");
+vector<vector<bool>> Board::draw(bool drawOut = false){
     vector<vector<bool>> toDraw(20, vector<bool>(10, 0));
 
     // Transfer all points in board to toDraw matrix 
@@ -48,13 +47,18 @@ void Board::draw(){
     }
 
     // Paint the toDraw matrix out
-    for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 10; j++)
-            cout << (j == 0 ? to_string(i%10) : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : "");
+    if (drawOut) {
+        system("cls");
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 10; j++)
+                cout << (j == 0 ? to_string(i % 10) : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : "");
+            cout << "\n";
+        }
         cout << "\n";
     }
     
-    cout << "\n";
+    
+    return toDraw;
 }
 
 void Board::newTetriminos() {
@@ -101,9 +105,7 @@ void Board::newTetriminos() {
     
 }
 
-void Board::update(){
-    int n;
-    // cout << "(1) for Left, (3) for Right, (5) to Transform clockwise, (6) to Transform anti clock wise: ";
+void Board::update(string move = "update") {
     int key = -1;
             
     // A non blocking input (If there is no input -> skip and go to next line)
@@ -112,10 +114,18 @@ void Board::update(){
         // cout << "Key: " << key << "\n";
     }
     
-    if (key == 0 || key == 224)
+    if (move == "" && key == 0 || key == 224)
         key = _getch();
+
+    if (move == "left")
+        b->GoLeft(board);
+    else if (move == "right")
+        b->GoRight(board);
+    else if (move == "clock")
+        b->Rotate(board, true);
+    else if (move == "anticlock")
+        b->Rotate(board, false);
     
-    bool result;
     switch (key) {
         case 75:
             cout << "Case 1\n";

@@ -20,9 +20,18 @@ class Board{
         vector<vector<bool>> board;
         void createBoard();
         void print();
-        void draw();
+        vector<vector<bool>> draw(bool drawOut);
         void newTetriminos();
-        void update();
+        void update(string move);
+        /*vector<vector<bool>> GetBoard() {
+            vector<vector<bool>> toDraw = 
+
+            vector<pair<int, int>> pos = b->GetAllPoints(initialx, initialy, currentRotation);
+            for (int i = 0; i < pos.size(); i++) {
+                toDraw[pos[i].first][pos[i].second] = true;
+            }
+            return board;
+        }*/
         
         void clearRow(int row);
         bool isRowFull(int row);

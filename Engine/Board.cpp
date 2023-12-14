@@ -115,7 +115,6 @@ void Board::update(){
     if (key == 0 || key == 224)
         key = _getch();
     
-    bool result;
     switch (key) {
         case 75:
             cout << "Case 1\n";
