@@ -139,10 +139,10 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     std::vector<sf::Text> index(size);
     for (int i = 0; i < size; i++) {
         index[i].setFont(fontPlay);
-        index[i].setString(to_string(i) + ".");
+        index[i].setString(to_string(i+1) + ".");
         index[i].setCharacterSize(30);
         index[i].setFillColor(sf::Color(76, 37, 1, 255));
-        index[i].setPosition(70, 350 + i * 50);
+        index[i].setPosition(70, 330 + i * 50);
     }
     window.clear(sf::Color::Black);
 
@@ -153,7 +153,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
         NamePlayer[i].setString(list[i].getName());
         NamePlayer[i].setCharacterSize(30);
         NamePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
-        NamePlayer[i].setPosition(125, 350 + i * 50);
+        NamePlayer[i].setPosition(125, 330 + i * 50);
     }
     window.clear(sf::Color::Black);
     
@@ -164,7 +164,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
         ScorePlayer[i].setString(to_string(list[i].getPoint()));
         ScorePlayer[i].setCharacterSize(30);
         ScorePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
-        ScorePlayer[i].setPosition(550, 350 + i * 50);
+        ScorePlayer[i].setPosition(550, 330 + i * 50);
     }
     
     // Draw title screen image    
