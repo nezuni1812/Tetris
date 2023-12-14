@@ -30,7 +30,9 @@ public:
     bool GoDown(vector<vector<bool>> board);
     bool GoLeft(vector<vector<bool>> board);
     bool GoRight(vector<vector<bool>> board);
-    
+
+    vector<pair<int,int>> drawGhostTetromino(vector<vector<bool>> board);
+    void hardDrop(vector<vector<bool>> board);
     vector<pair<int,int>> GetAllPoints(int _x, int _y, int _currentState);
 };
 

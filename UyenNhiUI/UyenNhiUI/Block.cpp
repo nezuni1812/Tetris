@@ -1,17 +1,17 @@
 #include "Block.h"
 
-Tetriminos::Tetriminos(int x, int y) : x(x), y(y) {
+Tetriminos::Tetriminos(int x, int y, int color) : x(x), y(y), color(color) {
     lastUpdate = timeSinceEpochMillisec();
 };
 
-bool Tetriminos::isCollided(vector<vector<bool>> board, int _x, int _y, int _currentState){
+bool Tetriminos::isCollided(vector<vector<Pixel>> board, int _x, int _y, int _currentState){
     vector<pair<int,int>> pos = GetAllPoints(_x, _y, _currentState);
     
     for (int i = 0; i < pos.size(); i++) {
         // cout << pos[i].first << ", " << pos[i].second << endl;
         if (pos[i].first >= HEIGHT || pos[i].first < 0 || 
             pos[i].second >= WIDTH || pos[i].second < 0 ||
-            board[pos[i].first][pos[i].second] != 0) {
+            board[pos[i].first][pos[i].second].filled != 0) {
                 // cout << "Cant go\n";
                 return true;
             }
@@ -50,6 +50,13 @@ void Tetriminos::InitWallKick(int type) {
     
 }
 
+void Tetriminos::SetColor() {
+    for (int i = 0; i < states.size(); i++)
+        for (int j = 0; j < states[i].size(); j++)
+            for (int z = 0; z < states[i][j].size(); z++)
+                states[i][j][z].color = color;
+}
+
 uint64_t Tetriminos::timeSinceEpochMillisec() {
     using namespace std::chrono;
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -59,7 +66,7 @@ void Tetriminos::LastUpdate() {
     lastUpdate = timeSinceEpochMillisec();
 }
 
-bool Tetriminos::Continue(vector<vector<bool>> board) {
+bool Tetriminos::Continue(vector<vector<Pixel>> board) {
     unsigned long long timeNow = timeSinceEpochMillisec();
     // cout << (timeNow - lastUpdate) << " time has passed\n";
     if ((timeNow - lastUpdate) < 400)
@@ -75,7 +82,7 @@ bool Tetriminos::Continue(vector<vector<bool>> board) {
     return true;
 }
 
-void Tetriminos::Rotate(vector<vector<bool>> board, bool clockWise) {
+void Tetriminos::Rotate(vector<vector<Pixel>> board, bool clockWise) {
     int nextRotation;
     if (clockWise)
         nextRotation = currentRotation + 1;
@@ -103,7 +110,7 @@ void Tetriminos::Rotate(vector<vector<bool>> board, bool clockWise) {
     currentRotation = nextRotation;
 }; 
 
-bool Tetriminos::GoDown(vector<vector<bool>> board) {
+bool Tetriminos::GoDown(vector<vector<Pixel>> board) {
     int _x = x, _y = y + 1;
     
     if (isCollided(board, _x, _y, currentRotation)) {
@@ -114,7 +121,7 @@ bool Tetriminos::GoDown(vector<vector<bool>> board) {
     return true;
 };
 
-bool Tetriminos::GoLeft(vector<vector<bool>> board) {
+bool Tetriminos::GoLeft(vector<vector<Pixel>> board) {
     int _x = x - 1, _y = y;
     
     if (isCollided(board, _x, _y, currentRotation))
@@ -125,7 +132,7 @@ bool Tetriminos::GoLeft(vector<vector<bool>> board) {
     return true;
 }; 
 
-bool Tetriminos::GoRight(vector<vector<bool>> board) {
+bool Tetriminos::GoRight(vector<vector<Pixel>> board) {
     int _x = x + 1, _y = y;
     
     if (isCollided(board, _x, _y, currentRotation))
@@ -146,7 +153,7 @@ vector<pair<int,int>> Tetriminos::GetAllPoints(int _x = -100, int _y = -100, int
     vector<pair<int,int>> points;
     for (int i = 0; i < states[_currentRotation].size(); i++)
         for (int j = 0; j < states[_currentRotation][0].size(); j++)
-            if (states[_currentRotation][i][j])
+            if (states[_currentRotation][i][j].filled)
                 points.push_back(make_pair(_y + i, _x + j));
             
     return points;

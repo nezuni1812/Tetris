@@ -36,21 +36,32 @@ void Board::draw(){
 
     // Transfer all points in board to toDraw matrix 
     for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 10; j++)
+        for(int j = 0; j < 10; j++){
             if(board[i][j] == 1)
                 toDraw[i][j] = 1;
+            // else if(board[i][j] == 2)
+            //     toDraw[i][j] = 2;
+        }
     }
     
     // Transfer all points in block b to toDraw matrix
     vector<pair<int,int>> pos = b->GetAllPoints();
+    
+    for (int i = 0; i < pos.size(); i++) {
+        toDraw[pos[i].first][pos[i].second] = true;
+        //toDraw[posGhost[i].first][posGhost[i].second] = false;
+    }
+
+    pos = b->drawGhostTetromino(board);
     for (int i = 0; i < pos.size(); i++) {
         toDraw[pos[i].first][pos[i].second] = true;
     }
 
     // Paint the toDraw matrix out
     for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 10; j++)
-            cout << (j == 0 ? to_string(i%10) : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : "");
+        for(int j = 0; j < 10; j++){
+            cout << (j == 0 ? to_string(i%10) : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : ""); 
+        }
         cout << "\n";
     }
     
@@ -115,7 +126,6 @@ void Board::update(){
     if (key == 0 || key == 224)
         key = _getch();
     
-    bool result;
     switch (key) {
         case 75:
             cout << "Case 1\n";
@@ -141,7 +151,9 @@ void Board::update(){
             cout << "Flip anti clock wise\n";
             b->Rotate(board, 0);
             break;
-
+        case 32:
+            cout << "Fully drop the block";
+            b->hardDrop(board);
     }
     
     b->Continue(board);
@@ -155,6 +167,7 @@ void Board::update(){
         for (int i = 0; i < pos.size(); i++)
             board[pos[i].first][pos[i].second] = true;
         newTetriminos(); 
+        b->drawGhostTetromino(board);
         if(b->isCollided(board, b->x, b->y, b->currentRotation)){
             isOver();
             cout << "Game over" << endl;
@@ -231,7 +244,8 @@ int Board::updateScore(int lineDeleted){
 }
 
 bool Board::isOver(){
-    if(b->cannotGoDown && b->x == 0)
+    if(b->cannotGoDown && b->y <= 0)
         return true;
     return false;
 }
+

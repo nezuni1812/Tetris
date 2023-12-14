@@ -136,6 +136,13 @@ bool Tetriminos::GoRight(vector<vector<bool>> board) {
     return true;
 };  
 
+void Tetriminos::hardDrop(vector<vector<bool>> board){  
+    while(GoDown(board)){
+        if(isCollided(board, x, y, currentRotation))
+            break;
+    }
+}
+
 vector<pair<int,int>> Tetriminos::GetAllPoints(int _x = -100, int _y = -100, int _currentRotation = -100) {
     if (_x == -100) {
         _x = x;
@@ -151,3 +158,17 @@ vector<pair<int,int>> Tetriminos::GetAllPoints(int _x = -100, int _y = -100, int
             
     return points;
 }
+
+vector<pair<int,int>> Tetriminos::drawGhostTetromino(vector<vector<bool>> board) {
+    int ghostY = y;
+
+    while (!isCollided(board, x, ghostY + 1, currentRotation)) {
+        ghostY++;
+    }
+
+    vector<pair<int, int>> ghostPoints = GetAllPoints(x, ghostY, currentRotation);
+    return ghostPoints;
+}
+
+
+
