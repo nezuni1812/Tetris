@@ -4,15 +4,11 @@ Board::Board(){
     rows = 20;
     cols = 10;
     cellSize = 30;
-    
     board = vector<vector<bool>>(20, (vector<bool>(10, 0)));
     
     // For testing S spin
-    // board[15] = {1, 1, 1, 1, 1, 1, 0, 0, 1, 1};
-    // board[16] = {1, 1, 1, 1, 0, 0, 0, 0, 1, 1};
-    // board[17] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
-    // board[18] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
-    // board[19] = {1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
+    board[18] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
+    board[19] = {1, 1, 1, 1, 0, 0, 1, 1, 1, 1};
     // createBoard();
 
 }
@@ -148,12 +144,12 @@ void Board::update(){
 
     }
     
-    bool reDraw = b->Continue(board);
+    b->Continue(board);
     // if (reDraw)
     //     cin >> reDraw;
             
     // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetrimino
-    if (reDraw && b->cannotGoDown) {
+    if (b->cannotGoDown) {
         cout << "Creating new block\n";
         vector<pair<int,int>> pos = b->GetAllPoints();
         for (int i = 0; i < pos.size(); i++)
@@ -167,11 +163,11 @@ void Board::update(){
     
 
     int lineDeleted = clearFullRows();
+    draw();
+    cout << "Score: " << updateScore(lineDeleted) << endl;
     
     if (b->timeSinceEpochMillisec() - updateTime > 1000) {
-        draw();
         updateTime = b->timeSinceEpochMillisec();
-        cout << "Score: " << updateScore(lineDeleted) << endl;
     }
     //cout << score(lineDeleted) << "\n";
 
