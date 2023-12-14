@@ -158,6 +158,7 @@ void Board::update(){
         if(b->isCollided(board, b->x, b->y, b->currentRotation)){
             isOver();
             cout << "Game over" << endl;
+            exit(1);
         }
     }
     
