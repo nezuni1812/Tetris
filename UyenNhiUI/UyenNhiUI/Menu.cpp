@@ -47,11 +47,6 @@ void displayInstructionScreen(sf::RenderWindow& window) {
     }
 }
 
-// Compare score 
-bool comparePoint(Player& a, Player& b) {
-    return a.getPoint() > b.getPoint();
-}
-
 // Function to display the Leaderboard screen
 void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     // Load and display the "Leaderboard" screen image
@@ -59,7 +54,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     leaderboardScreenTexture.loadFromFile("Resources/leaderboard.png");
     sf::Sprite leaderboardScreen(leaderboardScreenTexture);
 
-    int size = 5;
+    int size = 2;
     // Load font
     sf::Font fontPlay;
     fontPlay.loadFromFile("Resources/level-up.otf");
@@ -71,37 +66,35 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
         index[i].setString(to_string(i + 1) + ".");
         index[i].setCharacterSize(30);
         index[i].setFillColor(sf::Color(76, 37, 1, 255));
-        index[i].setPosition(70, 330 + i * 50);
+        index[i].setPosition(70, 350 + i * 50);
     }
     window.clear(sf::Color::Black);
 
     // NAME
-    sort(list.begin(), list.end(), comparePoint);
     std::vector<sf::Text> NamePlayer(size);
     for (int i = 0; i < size; i++) {
         NamePlayer[i].setFont(fontPlay);
         NamePlayer[i].setString(list[i].getName());
         NamePlayer[i].setCharacterSize(30);
         NamePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
-        NamePlayer[i].setPosition(125, 330 + i * 50);
+        NamePlayer[i].setPosition(125, 350 + i * 50);
     }
     window.clear(sf::Color::Black);
 
     // SCORE
-    sort(list.begin(), list.end(), comparePoint);
     std::vector<sf::Text> ScorePlayer(size);
     for (int i = 0; i < size; i++) {
         ScorePlayer[i].setFont(fontPlay);
         ScorePlayer[i].setString(to_string(list[i].getPoint()));
         ScorePlayer[i].setCharacterSize(30);
         ScorePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
-        ScorePlayer[i].setPosition(550, 330 + i * 50);
+        ScorePlayer[i].setPosition(550, 350 + i * 50);
     }
 
     // Draw title screen image    
     window.draw(leaderboardScreen);
 
-    // Draw leaderboard info
+    // Draw menu items
     for (int i = 0; i < size; ++i) {
         window.draw(index[i]);
         window.draw(NamePlayer[i]);
