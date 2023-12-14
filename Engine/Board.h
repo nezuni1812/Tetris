@@ -12,10 +12,8 @@ class Board{
         int cols;
         int cellSize;
         int updateTime;
-        const int HEIGHT = 20;
-        const int WIDTH = 10;
         
-        Tetriminos* b = new I;
+        Tetriminos* b = new S;
         void moveRowDown(int row, int rows);
 
     public:
