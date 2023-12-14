@@ -4,7 +4,7 @@ Board::Board(){
     rows = 20;
     cols = 10;
     cellSize = 30;
-    board = vector<vector<bool>>(20, (vector<bool>(10, 0)));
+    board = vector<vector<Pixel>>(20, (vector<Pixel>(10, 0)));
     
     // For testing S spin
     board[18] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
@@ -30,20 +30,22 @@ void Board::print(){
     // }
 }
 
-vector<vector<bool>> Board::draw(bool drawOut = false){
-    vector<vector<bool>> toDraw(20, vector<bool>(10, 0));
+vector<vector<Pixel>> Board::draw(bool drawOut = false){
+    vector<vector<Pixel>> toDraw(20, vector<Pixel>(10, 0));
 
     // Transfer all points in board to toDraw matrix 
-    for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 10; j++)
-            if(board[i][j] == 1)
-                toDraw[i][j] = 1;
+    for (int i = 0; i < 20; i++){
+        for (int j = 0; j < 10; j++)
+            if (board[i][j].filled == 1) {
+                toDraw[i][j] = board[i][j];
+            }
     }
     
     // Transfer all points in block b to toDraw matrix
     vector<pair<int,int>> pos = b->GetAllPoints(initialx,initialy,currentRotation);
     for (int i = 0; i < pos.size(); i++) {
-        toDraw[pos[i].first][pos[i].second] = true;
+        toDraw[pos[i].first][pos[i].second].filled = true;
+        toDraw[pos[i].first][pos[i].second].color = b->GetColor();
     }
 
     // Paint the toDraw matrix out
@@ -51,7 +53,7 @@ vector<vector<bool>> Board::draw(bool drawOut = false){
         system("cls");
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 10; j++)
-                cout << (j == 0 ? to_string(i % 10) : "") << (toDraw[i][j] ? "#" : " ") << (j == 9 ? "." : "");
+                cout << (j == 0 ? to_string(i % 10) : "") << (toDraw[i][j].filled ? "#" : " ") << (j == 9 ? "." : "");
             cout << "\n";
         }
         cout << "\n";
@@ -121,6 +123,8 @@ void Board::update(string move = "update") {
         b->GoLeft(board);
     else if (move == "right")
         b->GoRight(board);
+    else if (move == "down")
+        b->GoDown(board);
     else if (move == "clock")
         b->Rotate(board, true);
     else if (move == "anticlock")
@@ -160,13 +164,17 @@ void Board::update(string move = "update") {
             
     // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetrimino
     if (b->cannotGoDown) {
-        cout << "Creating new block\n";
         vector<pair<int,int>> pos = b->GetAllPoints(initialx, initialy, currentRotation);
-        for (int i = 0; i < pos.size(); i++)
+
+        for (int i = 0; i < pos.size(); i++) {
             board[pos[i].first][pos[i].second] = true;
+            board[pos[i].first][pos[i].second].color = b->GetColor();
+        }
+
+        cout << "Creating new block\n";
         newTetriminos(); 
         if(b->isCollided(board, b->x, b->y, b->currentRotation)){
-            isOver();
+            overState = true;
             cout << "Game over" << endl;
         }
     }
@@ -194,7 +202,7 @@ void Board::clearRow(int row){
 //check if a row is full of blocks or not
 bool Board::isRowFull(int row){
     for(int col = 0; col < cols; col++)
-        if(board[row][col] == 0)
+        if(board[row][col].filled == 0)
             return false;
     return true;
 }
@@ -240,7 +248,5 @@ int Board::updateScore(int lineDeleted){
 }
 
 bool Board::isOver(){
-    if(b->cannotGoDown && b->x == 0)
-        return true;
-    return false;
+    return overState;
 }

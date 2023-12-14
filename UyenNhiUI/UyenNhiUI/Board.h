@@ -11,20 +11,21 @@ class Board{
         int cols;
         int cellSize;
         int updateTime;
+        bool overState = false;
         
         Tetriminos* b = new S;
         void moveRowDown(int row, int rows);
 
     public:
         Board();
-        vector<vector<bool>> board;
+        vector<vector<Pixel>> board;
         void createBoard();
         void print();
-        vector<vector<bool>> draw(bool drawOut);
+        vector<vector<Pixel>> draw(bool drawOut);
         void newTetriminos();
         void update(string move);
-        /*vector<vector<bool>> GetBoard() {
-            vector<vector<bool>> toDraw = 
+        /*vector<vector<Pixel>> GetBoard() {
+            vector<vector<Pixel>> toDraw = 
 
             vector<pair<int, int>> pos = b->GetAllPoints(initialx, initialy, currentRotation);
             for (int i = 0; i < pos.size(); i++) {
