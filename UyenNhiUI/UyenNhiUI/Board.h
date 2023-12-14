@@ -22,6 +22,7 @@ class Board{
         void createBoard();
         void print();
         vector<vector<Pixel>> draw(bool drawOut);
+        vector<vector<Pixel>> drawGhostPiece();
         void newTetriminos();
         void update(string move);
         /*vector<vector<Pixel>> GetBoard() {

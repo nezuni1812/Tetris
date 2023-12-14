@@ -1,7 +1,9 @@
 ﻿  Menu.cpp
-C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(98,78): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(98,57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(158,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(170,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(182,45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(103,78): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(103,57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(115,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(115,62): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(176,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(188,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(200,45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   UyenNhiUI.vcxproj -> C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\x64\Debug\UyenNhiUI.exe

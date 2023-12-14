@@ -45,10 +45,12 @@ public:
     bool Continue(vector<vector<Pixel>> board);
     void Rotate(vector<vector<Pixel>> board, bool clockWise);
     bool GoDown(vector<vector<Pixel>> board);
+    bool HardDrop(vector<vector<Pixel>> board);
     bool GoLeft(vector<vector<Pixel>> board);
     bool GoRight(vector<vector<Pixel>> board);
     
-    vector<pair<int,int>> GetAllPoints(int _x, int _y, int _currentState);
+    vector<pair<int, int>> GetAllPoints(int _x, int _y, int _currentState);
+    vector<pair<int, int>> GetGhostTetromino(vector<vector<Pixel>> board);
     int GetColor() {
         return color;
     }
