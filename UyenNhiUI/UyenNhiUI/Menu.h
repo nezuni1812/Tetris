@@ -14,6 +14,7 @@ const string MENU_ITEMS[MENU_ITEM_COUNT] = { "PLAY", "Leaderboard", "Instruction
 
 void displayPlayScreen(sf::RenderWindow& window);
 void displayInstructionScreen(sf::RenderWindow& window);
+bool comparePoint(Player& a, Player& b);
 void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list);
 
 void titleScreen(RenderWindow& window);
