@@ -3,6 +3,8 @@
 #include <SFML/Audio.hpp>
 #include <time.h>
 #include <Windows.h>
+#include <fstream>
+#include <string>
 
 using namespace sf;
 using namespace std;
@@ -22,12 +24,62 @@ public:
     }
 };
 
+/*void writeFile(Player* listPlayer, int n) {
+    fstream fs;
+    string filename = "Resources/record.txt";
+    fs.open(filename, ios::in);
+    if (!fs.is_open()) {
+        cout << "Can't open file " << filename;
+        return;
+    }
+    fs >> n;
+    fs.close();
+
+    fs.open(filename, ios::out);
+    if (!fs.is_open()) {
+        cout << "Can't open file " << filename;
+        return;
+    }
+    fs << n << endl;
+
+    for (int i = 0; i < n; i++) {
+        fs << listPlayer[i].getName() << " ";
+        fs << listPlayer[i].getPoint() << " ";
+    }
+    fs.close();
+}*/
+vector<Player> inputPlayerInfo() {
+    vector<Player> listPlayer;
+    
+    fstream fs;
+    fs.open("Resources/record.txt");
+    if (!fs.is_open()) {
+        cout << "Can't open file ";
+        return listPlayer;
+    }
+    int n;
+    fs >> n; // Read number of players
+
+    string tempName;
+    string tempPoint;
+    for (int i = 0; i < n; i++) {
+        fs >> tempName;
+        fs >> tempPoint;
+        listPlayer.push_back(Player(tempName, stoi(tempPoint)));
+        //fs.ignore();
+    }
+    fs.close();
+    return listPlayer;
+}
+
+
 const int MENU_ITEM_COUNT = 4;
 const string MENU_ITEMS[MENU_ITEM_COUNT] = { "PLAY", "Leaderboard", "Instruction", "Exit" };
 
 // Function to display the Play screen
 void displayPlayScreen(sf::RenderWindow& window) {
     // Load and display the "Play" screen image
+
     sf::Texture playScreenTexture;
     playScreenTexture.loadFromFile("Resources/game_screen.png");
     sf::Sprite playScreen(playScreenTexture);
@@ -77,7 +129,54 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     sf::Texture leaderboardScreenTexture;
     leaderboardScreenTexture.loadFromFile("Resources/leaderboard.png");
     sf::Sprite leaderboardScreen(leaderboardScreenTexture);
+   
+    int size = 2; 
+    // Load font
+    sf::Font fontPlay;
+    fontPlay.loadFromFile("Resources/level-up.otf");
+
+    // NUM
+    std::vector<sf::Text> index(size);
+    for (int i = 0; i < size; i++) {
+        index[i].setFont(fontPlay);
+        index[i].setString(to_string(i) + ".");
+        index[i].setCharacterSize(30);
+        index[i].setFillColor(sf::Color(76, 37, 1, 255));
+        index[i].setPosition(80, 300 + i * 50);
+    }
+    window.clear(sf::Color::Black);
+
+    // NAME
+    std::vector<sf::Text> NamePlayer(size);
+    for (int i = 0; i < size; i++) {
+        NamePlayer[i].setFont(fontPlay);
+        NamePlayer[i].setString(list[i].getName());
+        NamePlayer[i].setCharacterSize(30);
+        NamePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
+        NamePlayer[i].setPosition(150, 300 + i * 50);
+    }
+    window.clear(sf::Color::Black);
+    
+    // SCORE
+    std::vector<sf::Text> ScorePlayer(size);
+    for (int i = 0; i < size; i++) {
+        ScorePlayer[i].setFont(fontPlay);
+        ScorePlayer[i].setString(to_string(list[i].getPoint()));
+        ScorePlayer[i].setCharacterSize(30);
+        ScorePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
+        ScorePlayer[i].setPosition(550, 300 + i * 50);
+    }
+    
+    // Draw title screen image    
     window.draw(leaderboardScreen);
+
+    // Draw menu items
+    for (int i = 0; i < size; ++i) {
+        window.draw(index[i]);
+        window.draw(ScorePlayer[i]);
+        window.draw(NamePlayer[i]);
+    }
+
     window.display();
     while (window.isOpen()) {
         sf::Event event;
@@ -99,11 +198,8 @@ void titleScreen(RenderWindow& window) {
     titleScreenTexture->loadFromFile("Resources/menu.png");
     Sprite titleScreen(*titleScreenTexture);
 
-
     //Inline initialize vector
-    Player Player1("Han", 2804);
-    Player Player2("Nhi", 1812);
-    vector<Player> list = { Player1,Player2 };
+    vector<Player> list = inputPlayerInfo();
 
     // Create text objects for menu items
     sf::Text menuTexts[MENU_ITEM_COUNT];
@@ -189,6 +285,9 @@ void titleScreen(RenderWindow& window) {
 
 int main()
 {
+    Music music;
+    //music.openFromFile("Resources/intro.wav");
+
     RenderWindow window(VideoMode(750, 850), "Tetris", Style::Titlebar | Style::Close);
     titleScreen(window);
 }
