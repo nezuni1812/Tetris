@@ -159,7 +159,7 @@ void Board::update(){
         for (int i = 0; i < pos.size(); i++)
             board[pos[i].first][pos[i].second] = true;
         newTetriminos(); 
-        if(b->isCollided(board, b->x, b->y, b->currentState)){
+        if(b->isCollided(board, b->x, b->y, b->currentRotation)){
             isOver();
             cout << "Game over" << endl;
         }
