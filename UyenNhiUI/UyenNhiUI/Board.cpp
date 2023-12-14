@@ -34,19 +34,19 @@ vector<vector<Pixel>> Board::draw(bool drawOut = false){
     vector<vector<Pixel>> toDraw(20, vector<Pixel>(10, 0));
 
     // Transfer all points in board to toDraw matrix 
-    for (int i = 0; i < 20; i++){
-        for (int j = 0; j < 10; j++)
-            if (board[i][j].filled == 1) {
-                toDraw[i][j] = board[i][j];
-            }
-    }
-    
-    // Transfer all points in block b to toDraw matrix
+    toDraw = board;
+
+    // Transfer all points in current tetromino to toDraw matrix
     vector<pair<int,int>> pos = b->GetAllPoints(initialx,initialy,currentRotation);
     for (int i = 0; i < pos.size(); i++) {
         toDraw[pos[i].first][pos[i].second].filled = true;
         toDraw[pos[i].first][pos[i].second].color = b->GetColor();
     }
+
+    /*pos = b->GetGhostTetromino(board);
+    for (int i = 0; i < pos.size(); i++) {
+        toDraw[pos[i].first][pos[i].second] = true;
+    }*/
 
     // Paint the toDraw matrix out
     if (drawOut) {
@@ -60,6 +60,18 @@ vector<vector<Pixel>> Board::draw(bool drawOut = false){
     }
     
     
+    return toDraw;
+}
+
+vector<vector<Pixel>> Board::drawGhostPiece() {
+    vector<vector<Pixel>> toDraw = board;
+
+    vector<pair<int, int>> pos = b->GetGhostTetromino(board);
+    for (int i = 0; i < pos.size(); i++) {
+        toDraw[pos[i].first][pos[i].second].filled = true;
+        toDraw[pos[i].first][pos[i].second].color = b->GetColor();
+    }
+
     return toDraw;
 }
 
@@ -125,6 +137,8 @@ void Board::update(string move = "update") {
         b->GoRight(board);
     else if (move == "down")
         b->GoDown(board);
+    else if (move == "drop")
+        b->HardDrop(board);
     else if (move == "clock")
         b->Rotate(board, true);
     else if (move == "anticlock")
@@ -159,8 +173,6 @@ void Board::update(string move = "update") {
     }
     
     b->Continue(board);
-    // if (reDraw)
-    //     cin >> reDraw;
             
     // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetrimino
     if (b->cannotGoDown) {
@@ -187,10 +199,6 @@ void Board::update(string move = "update") {
     if (b->timeSinceEpochMillisec() - updateTime > 1000) {
         updateTime = b->timeSinceEpochMillisec();
     }
-    //cout << score(lineDeleted) << "\n";
-
-   
-    
 }
 
 //clear row 

@@ -48,6 +48,7 @@ void displayPlayScreen(sf::RenderWindow& window) {
     blockTexture[6].loadFromFile("Resources/red.png");
     blockTexture[7].loadFromFile("Resources/yellow.png");
     sf::Sprite singleBlock;
+    sf::Sprite singleGhostBlock;
 
     while (window.isOpen()) {
         window.draw(playScreen);
@@ -74,6 +75,10 @@ void displayPlayScreen(sf::RenderWindow& window) {
                     board.update("down");
                 }
 
+                else if (event.key.code == sf::Keyboard::Space) {
+                    board.update("drop");
+                }
+
                 else if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::J) {
                     board.update("clock");
                 }
@@ -98,6 +103,19 @@ void displayPlayScreen(sf::RenderWindow& window) {
                     singleBlock.setPosition(LEFTPADDING + 40*col, TOPPADDING + 40*row);
                     window.draw(singleBlock);
                 }
+
+        tetrisStack = board.drawGhostPiece();
+
+        for (int row = 0; row < tetrisStack.size(); row++)
+            for (int col = 0; col < tetrisStack[row].size(); col++)
+                if (tetrisStack[row][col].filled) {
+                    cout << row << ", " << col << tetrisStack[row][col].color << endl;
+                    singleGhostBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
+                    singleGhostBlock.setColor(sf::Color(255,255,255,100));
+                    singleGhostBlock.setPosition(LEFTPADDING + 40 * col, TOPPADDING + 40 * row);
+                    window.draw(singleGhostBlock);
+                }
+
         if (board.isOver())
             break;
         window.display();

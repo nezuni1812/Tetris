@@ -121,6 +121,14 @@ bool Tetriminos::GoDown(vector<vector<Pixel>> board) {
     return true;
 };
 
+bool Tetriminos::HardDrop(vector<vector<Pixel>> board) {
+    while (GoDown(board)) {
+        if (isCollided(board, x, y, currentRotation))
+            return true;
+    }
+    return false;
+}
+
 bool Tetriminos::GoLeft(vector<vector<Pixel>> board) {
     int _x = x - 1, _y = y;
     
@@ -157,4 +165,15 @@ vector<pair<int,int>> Tetriminos::GetAllPoints(int _x = -100, int _y = -100, int
                 points.push_back(make_pair(_y + i, _x + j));
             
     return points;
+}
+
+vector<pair<int, int>> Tetriminos::GetGhostTetromino(vector<vector<Pixel>> board) {
+    int ghostY = y;
+
+    while (!isCollided(board, x, ghostY + 1, currentRotation)) {
+        ghostY++;
+    }
+
+    vector<pair<int, int>> ghostPoints = GetAllPoints(x, ghostY, currentRotation);
+    return ghostPoints;
 }
