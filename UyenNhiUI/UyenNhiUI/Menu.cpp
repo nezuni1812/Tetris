@@ -1,13 +1,13 @@
 ﻿#include "Menu.h"
+#include "Board.h"
 
-// Function to display the Play screen
-void displayPlayScreen(sf::RenderWindow& window) {
-    // Load and display the "Play" screen image
+void displayLoseScreen(sf::RenderWindow& window, int score = 0) {
+    // Load and display the "Lose" screen image
+    sf::Texture gameOverTexture;
+    gameOverTexture.loadFromFile("Resources/lose_screen.png");
 
-    sf::Texture playScreenTexture;
-    playScreenTexture.loadFromFile("Resources/game_screen.png");
-    sf::Sprite playScreen(playScreenTexture);
-    window.draw(playScreen);
+    sf::Sprite gameOver(gameOverTexture);
+    window.draw(gameOver);
     window.display();
     while (window.isOpen()) {
         sf::Event event;
@@ -23,6 +23,90 @@ void displayPlayScreen(sf::RenderWindow& window) {
         }
     }
 }
+
+// Function to display the Play screen
+void displayPlayScreen(sf::RenderWindow& window) {
+    // Load and display the "Play" screen image
+    const int LEFTPADDING = 43;
+    const int TOPPADDING = 25;
+
+    sf::Texture playScreenTexture;
+    playScreenTexture.loadFromFile("Resources/game_screen.png");
+    sf::Sprite playScreen(playScreenTexture);
+    window.clear();
+
+    Board board;
+
+    vector<sf::Texture> blockTexture;
+    blockTexture.resize(8);
+    blockTexture[0].loadFromFile("Resources/grey.png");
+    blockTexture[1].loadFromFile("Resources/amber.png");
+    blockTexture[2].loadFromFile("Resources/blue.png");
+    blockTexture[3].loadFromFile("Resources/cyan.png");
+    blockTexture[4].loadFromFile("Resources/green.png");
+    blockTexture[5].loadFromFile("Resources/yellow.png");
+    blockTexture[6].loadFromFile("Resources/purple.png");
+    blockTexture[7].loadFromFile("Resources/red.png");
+    sf::Sprite singleBlock;
+
+    while (window.isOpen()) {
+        window.draw(playScreen);
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            else if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    return;
+                }
+
+                else if (event.key.code == sf::Keyboard::Left) {
+                    board.update("left");
+                }
+
+                else if (event.key.code == sf::Keyboard::Right) {
+                    board.update("right");
+                }
+
+                else if (event.key.code == sf::Keyboard::Down) {
+                    board.update("down");
+                }
+
+                else if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::J) {
+                    board.update("clock");
+                }
+
+                else if (event.key.code == sf::Keyboard::K) {
+                    board.update("anticlock");
+                }
+            }
+
+
+        }
+
+        board.update("update");
+
+        vector<vector<Pixel>> tetrisStack = board.draw(false);
+
+        for (int row = 0; row < tetrisStack.size(); row++)
+            for (int col = 0; col < tetrisStack[row].size(); col++)
+                if (tetrisStack[row][col].filled) {
+                    cout << row << ", " << col << tetrisStack[row][col].color << endl;
+                    singleBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
+                    singleBlock.setPosition(LEFTPADDING + 40*col, TOPPADDING + 40*row);
+                    window.draw(singleBlock);
+                }
+        if (board.isOver())
+            break;
+        window.display();
+    }
+
+    //Move to Lose screen
+    displayLoseScreen(window);
+}
+
 
 // Function to display the Instruction screen
 void displayInstructionScreen(sf::RenderWindow& window) {
