@@ -18,7 +18,7 @@ const string MENU_ITEMS[MENU_ITEM_COUNT] = { "PLAY", "Leaderboard", "Instruction
 void displayPlayScreen(sf::RenderWindow& window) {
     // Load and display the "Play" screen image
     sf::Texture playScreenTexture;
-    playScreenTexture.loadFromFile("Resources/play_screen.png");
+    playScreenTexture.loadFromFile("Resources/game_screen.png");
     sf::Sprite playScreen(playScreenTexture);
     window.draw(playScreen);
     window.display();
