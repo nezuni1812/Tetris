@@ -142,7 +142,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
         index[i].setString(to_string(i) + ".");
         index[i].setCharacterSize(30);
         index[i].setFillColor(sf::Color(76, 37, 1, 255));
-        index[i].setPosition(80, 300 + i * 50);
+        index[i].setPosition(70, 350 + i * 50);
     }
     window.clear(sf::Color::Black);
 
@@ -153,7 +153,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
         NamePlayer[i].setString(list[i].getName());
         NamePlayer[i].setCharacterSize(30);
         NamePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
-        NamePlayer[i].setPosition(150, 300 + i * 50);
+        NamePlayer[i].setPosition(125, 350 + i * 50);
     }
     window.clear(sf::Color::Black);
     
@@ -164,7 +164,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
         ScorePlayer[i].setString(to_string(list[i].getPoint()));
         ScorePlayer[i].setCharacterSize(30);
         ScorePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
-        ScorePlayer[i].setPosition(550, 300 + i * 50);
+        ScorePlayer[i].setPosition(550, 350 + i * 50);
     }
     
     // Draw title screen image    
@@ -173,8 +173,8 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     // Draw menu items
     for (int i = 0; i < size; ++i) {
         window.draw(index[i]);
-        window.draw(ScorePlayer[i]);
         window.draw(NamePlayer[i]);
+        window.draw(ScorePlayer[i]);
     }
 
     window.display();
@@ -285,7 +285,7 @@ void titleScreen(RenderWindow& window) {
 
 int main()
 {
-    Music music;
+    //Music music;
     //music.openFromFile("Resources/intro.wav");
 
     RenderWindow window(VideoMode(750, 850), "Tetris", Style::Titlebar | Style::Close);
