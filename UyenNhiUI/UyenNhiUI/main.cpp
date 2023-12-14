@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <fstream>
 #include <string>
-
+#include <algorithm>
 using namespace sf;
 using namespace std;
 
@@ -24,7 +24,7 @@ public:
     }
 };
 
-/*void writeFile(Player* listPlayer, int n) {
+void writeFile(Player* listPlayer, int n) {
     fstream fs;
     string filename = "Resources/record.txt";
     fs.open(filename, ios::in);
@@ -47,7 +47,7 @@ public:
         fs << listPlayer[i].getPoint() << " ";
     }
     fs.close();
-}*/
+}
 vector<Player> inputPlayerInfo() {
     vector<Player> listPlayer;
     
@@ -122,6 +122,12 @@ void displayInstructionScreen(sf::RenderWindow& window) {
         }
     }
 }
+// Compare score 
+bool comparePoint(Player& a, Player& b) {
+    return a.getPoint() > b.getPoint();
+}
+
+
 
 // Function to display the Leaderboard screen
 void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
@@ -130,7 +136,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     leaderboardScreenTexture.loadFromFile("Resources/leaderboard.png");
     sf::Sprite leaderboardScreen(leaderboardScreenTexture);
    
-    int size = 2; 
+    int size = 5; 
     // Load font
     sf::Font fontPlay;
     fontPlay.loadFromFile("Resources/level-up.otf");
@@ -147,6 +153,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     window.clear(sf::Color::Black);
 
     // NAME
+    sort(list.begin(), list.end(), comparePoint);
     std::vector<sf::Text> NamePlayer(size);
     for (int i = 0; i < size; i++) {
         NamePlayer[i].setFont(fontPlay);
@@ -158,6 +165,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     window.clear(sf::Color::Black);
     
     // SCORE
+    sort(list.begin(), list.end(), comparePoint);
     std::vector<sf::Text> ScorePlayer(size);
     for (int i = 0; i < size; i++) {
         ScorePlayer[i].setFont(fontPlay);
@@ -170,7 +178,7 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
     // Draw title screen image    
     window.draw(leaderboardScreen);
 
-    // Draw menu items
+    // Draw leaderboard info
     for (int i = 0; i < size; ++i) {
         window.draw(index[i]);
         window.draw(NamePlayer[i]);
