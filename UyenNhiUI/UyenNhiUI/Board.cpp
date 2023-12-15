@@ -1,11 +1,14 @@
 #include "Board.h"
 
-Board::Board(){
+Board::Board(bool hardMode) {
     rows = 20;
     cols = 10;
     cellSize = 30;
+    this->hardMode = hardMode;
     board = vector<vector<Pixel>>(20, (vector<Pixel>(10, 0)));
-    
+    if (hardMode)
+        changeExistingStack();
+
     newTetriminos();
     b = nextTetromino;
     newTetriminos();
@@ -110,6 +113,38 @@ void Board::newTetriminos() {
     
 }
 
+void Board::updateBlockWaitTime() {
+    if (score < 20)
+        b->SetWaitTime(1);
+    else if (score < 50)
+        b->SetWaitTime(2);
+    else if (score < 80)
+        b->SetWaitTime(3);
+    else
+        b->SetWaitTime(4);
+}
+
+void Board::changeExistingStack() {
+    int rowsToMessUp;
+    if (score < 20)
+        rowsToMessUp = 2;
+    else if (score < 40)
+        rowsToMessUp = 4;
+    else if (score < 70)
+        rowsToMessUp = 6;
+    else
+        rowsToMessUp = 10;
+
+    for (int i = 0; i < rowsToMessUp; i++){
+        board[rows - 1 - i] = vector<Pixel>(10, 1);
+
+        int missingSpot = rand()%2 + 1;
+        for (int j = 0; j < missingSpot; j++)
+            board[rows - 1 - i][rand()%10] = Pixel(0);
+    }
+}
+
+
 void Board::update(string move = "update") {
     int key = -1;
             
@@ -189,7 +224,7 @@ void Board::update(string move = "update") {
         else
             b->SetWaitTime(4);
 
-        if(b->isCollided(board, b->x, b->y, b->currentRotation)){
+        if (b->isCollided(board, b->x, b->y, b->currentRotation)){
             overState = true;
             cout << "Game over" << endl;
         }

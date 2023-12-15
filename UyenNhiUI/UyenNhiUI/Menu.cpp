@@ -164,7 +164,7 @@ string displayChooseMode(RenderWindow& window) {
 }
 
 // Function to display the Play screen
-void displayPlayScreen(RenderWindow& window, string mode) {
+void displayPlayScreen(RenderWindow& window, string hardMode) {
     // Load and display the "Play" screen image
     const int LEFTPADDING = 43;
     const int TOPPADDING = 25;
@@ -180,7 +180,8 @@ void displayPlayScreen(RenderWindow& window, string mode) {
     music_play.setVolume(35.0);
     music_play.play();
 
-    Board board;
+    bool goHard = hardMode == "HARD";
+    Board board(goHard);
 
     vector<Texture> blockTexture;
     blockTexture.resize(8);

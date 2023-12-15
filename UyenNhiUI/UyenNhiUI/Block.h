@@ -45,6 +45,7 @@ public:
             this->waitTime = 600;
         else
             this->waitTime = 290;
+
     }
     
     bool isCollided(vector<vector<Pixel>> board, int _x, int _y, int _currentState);

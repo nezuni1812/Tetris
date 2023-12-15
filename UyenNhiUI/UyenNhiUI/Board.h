@@ -14,19 +14,22 @@ class Board{
         bool overState = false;
         int currentPoint;
         int score = 0;
+        bool hardMode;
         
         Tetriminos* b = new S;
         Tetriminos* nextTetromino;
         void moveRowDown(int row, int rows);
 
     public:
-        Board();
+        Board(bool hardMode = false);
         vector<vector<Pixel>> board;
         void createBoard();
         void print();
         vector<vector<Pixel>> draw(bool drawOut);
         vector<vector<Pixel>> drawGhostPiece();
         void newTetriminos();
+        void updateBlockWaitTime();
+        void changeExistingStack();
         void update(string move);
         
         Tetriminos* GetCurrentTetromino() {
