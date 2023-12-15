@@ -19,11 +19,11 @@ void Player::setPointHARD(int pointHARD) {
     this->pointHARD = pointHARD;
 }
 
-bool Player::compareByPointEASY(const Player& a, const Player& b) {
+bool compareByPointEASY(const Player& a, const Player& b) {
     return a.pointEASY > b.pointEASY;
 }
 
-bool Player::compareByPointHARD(const Player& a, const Player& b) {
+bool compareByPointHARD(const Player& a, const Player& b) {
     return a.pointHARD > b.pointHARD;
 }
 
@@ -73,8 +73,8 @@ vector<Player> inputPlayerInfo() {
 }
 
 void sortPlayersEASY(vector<Player>& list) {
-    sort(list.begin(), list.end(), Player::compareByPointEASY);
+    sort(list.begin(), list.end(), compareByPointEASY);
 }
 void sortPlayersHARD(vector<Player>& list) {
-    sort(list.begin(), list.end(), Player::compareByPointHARD);
+    sort(list.begin(), list.end(), compareByPointHARD);
 }
