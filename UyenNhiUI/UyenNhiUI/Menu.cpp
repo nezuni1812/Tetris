@@ -166,7 +166,7 @@ string displayChooseMode(RenderWindow& window) {
 // Function to display the Play screen
 void displayPlayScreen(RenderWindow& window, string hardMode) {
     // Load and display the "Play" screen image
-    const int LEFTPADDING = 43;
+    const int LEFTPADDING = 42;
     const int TOPPADDING = 25;
 
     Texture playScreenTexture;
@@ -279,7 +279,7 @@ void displayPlayScreen(RenderWindow& window, string hardMode) {
         nextPieceTexture.loadFromFile(nextPieceFileName.c_str());
         Sprite nextImage;
         nextImage.setTexture((nextPieceTexture));
-        nextImage.setPosition(500, 180);
+        nextImage.setPosition(500, 164);
         window.draw(nextImage);
 
         Text uiText;

@@ -176,12 +176,15 @@ vector<pair<int,int>> Tetriminos::GetAllPoints(int _x, int _y, int _currentRotat
         _currentRotation = currentRotation;
     }
     
+    cout << "Get points\n";
     vector<pair<int,int>> points;
     for (int i = 0; i < states[_currentRotation].size(); i++)
         for (int j = 0; j < states[_currentRotation][0].size(); j++)
             if (states[_currentRotation][i][j].filled)
                 points.push_back(make_pair(_y + i, _x + j));
             
+    cout << "Passed\n";
+
     return points;
 }
 

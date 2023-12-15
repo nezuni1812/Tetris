@@ -13,8 +13,15 @@ Board::Board(bool hardMode) {
 
     newTetriminos();
     b = nextTetromino;
-    newTetriminos();
     b->SetWaitTime(1);
+    newTetriminos();
+}
+
+Board::~Board() {
+    if (b)
+        delete b;
+    if (nextTetromino)
+        delete nextTetromino;
 }
 
 uint64_t Board::timeSinceEpochMillisec() {
@@ -53,6 +60,7 @@ vector<vector<Pixel>> Board::draw(bool drawOut = false){
 vector<vector<Pixel>> Board::drawGhostPiece() {
     vector<vector<Pixel>> toDraw = board;
 
+    // Transfer all points in ghost tetromino to toDraw matrix
     vector<pair<int, int>> pos = b->GetGhostTetrominoPoints(board);
     for (int i = 0; i < pos.size(); i++) {
         toDraw[pos[i].first][pos[i].second].filled = true;
@@ -63,9 +71,11 @@ vector<vector<Pixel>> Board::drawGhostPiece() {
 }
 
 void Board::newTetriminos() {
-    srand(time(0));  
-    int val = rand()% 7;
+    /*if (nextTetromino)
+        delete nextTetromino;*/
 
+    srand(time(0));  
+    int val = rand() % 7;
     
     switch (val)
     {
@@ -103,6 +113,7 @@ void Board::newTetriminos() {
     
 }
 
+//Change the time for a block to fall by on block line
 void Board::updateBlockWaitTime() {
     if (score < 20)
         b->SetWaitTime(1);
@@ -114,6 +125,7 @@ void Board::updateBlockWaitTime() {
         b->SetWaitTime(4);
 }
 
+//Populate some of the board stack randomly (For Hard Mode)
 void Board::changeExistingStack() {
     int rowsToMessUp;
     if (score < 20)
@@ -135,6 +147,7 @@ void Board::changeExistingStack() {
 }
 
 
+//Update board and tetromino based on user's inputs
 void Board::update(string move = "update") {
 
     if (move == "left")
@@ -152,7 +165,7 @@ void Board::update(string move = "update") {
     
     b->Continue(board);
             
-    // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetromino + Check if the game is over
+    // If the Tetrominos cannot go down anymore -> Merge it with the board + Create new Tetromino + Check if the game is over
     if (b->isObstructedDown()) {
         vector<pair<int,int>> pos = b->GetAllPoints();
 
@@ -162,8 +175,8 @@ void Board::update(string move = "update") {
         }
 
         cout << "Creating new block\n";
-        if (b)
-            delete b;
+        /*if (b)
+            delete b;*/
         b = nextTetromino;
         newTetriminos(); 
 

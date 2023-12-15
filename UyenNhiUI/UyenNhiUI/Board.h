@@ -18,13 +18,14 @@ class Board{
         bool hardMode;
         uint64_t startTime;
         
-        Tetriminos* b = new S;
+        Tetriminos* b;
         Tetriminos* nextTetromino;
         void moveRowDown(int row, int rows);
         vector<vector<Pixel>> board;
 
     public:
         Board(bool hardMode = false);
+        ~Board();
         uint64_t timeSinceEpochMillisec();
         vector<vector<Pixel>> draw(bool drawOut);
         vector<vector<Pixel>> drawGhostPiece();
