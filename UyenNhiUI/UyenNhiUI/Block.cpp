@@ -101,7 +101,6 @@ void Tetriminos::Rotate(vector<vector<Pixel>> board, bool clockWise) {
     for (testCase = 0; testCase < wallKickCase[currentRotation][nextRotation].size(); testCase++) {
         int offSetY = wallKickCase[currentRotation][nextRotation][testCase].first;
         int offSetX = wallKickCase[currentRotation][nextRotation][testCase].second;
-        cout << "Offset: " << offSetY << " " << offSetX << endl;
         checkCollision = isCollided(board, x + offSetX, y - offSetY, nextRotation);
         if (!checkCollision)
             break;
@@ -109,7 +108,6 @@ void Tetriminos::Rotate(vector<vector<Pixel>> board, bool clockWise) {
     
     if (checkCollision)
         return ;
-    cout << "Case " << testCase << endl;
     y = y - wallKickCase[currentRotation][nextRotation][testCase].first;
     x = x + wallKickCase[currentRotation][nextRotation][testCase].second;
     currentRotation = nextRotation;
@@ -142,7 +140,6 @@ bool Tetriminos::GoLeft(vector<vector<Pixel>> board) {
     if (isCollided(board, _x, _y, currentRotation))
         return false;
     
-    cout << "Go left\n";
     x = _x; y = _y;
     return true;
 }; 
@@ -153,7 +150,6 @@ bool Tetriminos::GoRight(vector<vector<Pixel>> board) {
     if (isCollided(board, _x, _y, currentRotation))
         return false;
     
-    cout << "Go right\n";
     x = _x; y = _y;
     return true;
 };  
@@ -176,14 +172,12 @@ vector<pair<int,int>> Tetriminos::GetAllPoints(int _x, int _y, int _currentRotat
         _currentRotation = currentRotation;
     }
     
-    cout << "Get points\n";
     vector<pair<int,int>> points;
     for (int i = 0; i < states[_currentRotation].size(); i++)
         for (int j = 0; j < states[_currentRotation][0].size(); j++)
             if (states[_currentRotation][i][j].filled)
                 points.push_back(make_pair(_y + i, _x + j));
             
-    cout << "Passed\n";
 
     return points;
 }

@@ -213,6 +213,8 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
     music_move.openFromFile("Resources/music/move.wav");
     music_move.setVolume(35.0);
 
+    bool isPause = false;
+
     while (window.isOpen()) {
         window.draw(playScreen);
         Event event;
@@ -225,6 +227,10 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
 
                 if (event.key.code == Keyboard::Escape) {
                     return;
+                }
+
+                else if (event.key.code == Keyboard::P) {
+                    isPause = !isPause;
                 }
 
                 else if (event.key.code == Keyboard::Left) {
@@ -255,6 +261,11 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
             }
 
 
+        }
+
+        if (isPause) {
+            window.display();
+            continue;
         }
 
         board.update("update");
