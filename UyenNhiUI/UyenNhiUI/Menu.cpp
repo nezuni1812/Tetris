@@ -175,10 +175,10 @@ string displayChooseMode(RenderWindow& window) {
 
 // Function to display the Play screen
 void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& list) {
-    // Load and display the "Play" screen image
     const int LEFTPADDING = 42;
     const int TOPPADDING = 25;
 
+    // Load and display the "Play" screen image
     Texture playScreenTexture;
     playScreenTexture.loadFromFile("Resources/game_screen/game_screen.png");
     Sprite playScreen(playScreenTexture);
@@ -332,14 +332,13 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
             list[list.size() - 1].setPointHARD(board.GetPoints());
     }
 
-    //Ghi kết quả xuống File
+    //Ghi danh sách xuống File
     writeFile(list);
 
     //Move to Lose screen
     music_play.stop();
     displayLoseScreen(window, board.GetPoints());
 }
-
 
 // Function to display the Instruction screen
 void displayInstructionScreen(RenderWindow& window) {
