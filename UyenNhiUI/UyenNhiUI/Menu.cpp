@@ -274,7 +274,6 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
         for (int row = 0; row < tetrisStack.size(); row++)
             for (int col = 0; col < tetrisStack[row].size(); col++)
                 if (tetrisStack[row][col].filled) {
-                    cout << row << ", " << col << tetrisStack[row][col].color << endl;
                     singleBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
                     singleBlock.setPosition(LEFTPADDING + 40*col, TOPPADDING + 40*row);
                     window.draw(singleBlock);
@@ -284,7 +283,6 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
         for (int row = 0; row < tetrisStack.size(); row++)
             for (int col = 0; col < tetrisStack[row].size(); col++)
                 if (tetrisStack[row][col].filled) {
-                    cout << row << ", " << col << tetrisStack[row][col].color << endl;
                     singleGhostBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
 
                     singleGhostBlock.setColor(Color(255,255,255,100));
