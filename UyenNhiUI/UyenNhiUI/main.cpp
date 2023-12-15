@@ -16,11 +16,9 @@
 
 int main()
 {
-    //Music music;
-    //music.openFromFile("Resources/intro.wav");
-
     RenderWindow window(VideoMode(750, 850), "Tetris", Style::Titlebar | Style::Close);
-    titleScreen(window);
+    vector<Player> list = inputPlayerInfo();
+    displayLoginScreen(window, list);
 
     return 0;
 }
