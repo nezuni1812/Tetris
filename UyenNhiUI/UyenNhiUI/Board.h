@@ -1,6 +1,7 @@
 #pragma once
 #include <conio.h>
 #include <string>
+#include <chrono>
 #include "Block.h"
 
 using namespace std;
@@ -15,6 +16,7 @@ class Board{
         int currentPoint;
         int score = 0;
         bool hardMode;
+        uint64_t startTime;
         
         Tetriminos* b = new S;
         Tetriminos* nextTetromino;
@@ -23,6 +25,10 @@ class Board{
     public:
         Board(bool hardMode = false);
         vector<vector<Pixel>> board;
+        uint64_t timeSinceEpochMillisec() {
+            using namespace std::chrono;
+            return duration_cast<std::chrono::milliseconds>(system_clock::now().time_since_epoch()).count();
+        }
         void createBoard();
         void print();
         vector<vector<Pixel>> draw(bool drawOut);
@@ -40,6 +46,9 @@ class Board{
         }
         int GetPoints() {
             return score;
+        }
+        uint64_t GetTimePlayed() {
+            return timeSinceEpochMillisec() - startTime;
         }
 
         void clearRow(int row);

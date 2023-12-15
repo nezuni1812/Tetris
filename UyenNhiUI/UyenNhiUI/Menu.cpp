@@ -282,13 +282,18 @@ void displayPlayScreen(RenderWindow& window, string hardMode) {
         nextImage.setPosition(500, 180);
         window.draw(nextImage);
 
-        Text score;
-        score.setString(to_string(board.GetPoints()));
-        score.setPosition(500, 380);
-        score.setFont(fontPlay);
-        score.setCharacterSize(30);
-        score.setFillColor(Color(255, 37, 1, 255));
-        window.draw(score);
+        Text uiText;
+        uiText.setFont(fontPlay);
+        uiText.setCharacterSize(30);
+        uiText.setFillColor(Color(255, 37, 1, 255));
+
+        uiText.setPosition(500, 60);
+        uiText.setString(to_string(board.GetTimePlayed()/1000));
+        window.draw(uiText);
+
+        uiText.setPosition(500, 380);
+        uiText.setString(to_string(board.GetPoints()));
+        window.draw(uiText);
 
         window.display();
 

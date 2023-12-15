@@ -6,6 +6,8 @@ Board::Board(bool hardMode) {
     cellSize = 30;
     this->hardMode = hardMode;
     board = vector<vector<Pixel>>(20, (vector<Pixel>(10, 0)));
+    startTime = timeSinceEpochMillisec();
+
     if (hardMode)
         changeExistingStack();
 
