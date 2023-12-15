@@ -6,11 +6,9 @@ Board::Board(){
     cellSize = 30;
     board = vector<vector<Pixel>>(20, (vector<Pixel>(10, 0)));
     
-    // For testing S spin
-    board[18] = {1, 1, 1, 1, 1, 0, 0, 1, 1, 1};
-    board[19] = {1, 1, 1, 1, 0, 0, 1, 1, 1, 1};
-    // createBoard();
-
+    newTetriminos();
+    b = nextTetromino;
+    newTetriminos();
 }
 
 void Board::createBoard(){
@@ -76,9 +74,6 @@ vector<vector<Pixel>> Board::drawGhostPiece() {
 }
 
 void Board::newTetriminos() {
-    if (b)
-        delete b;
-
     srand(time(0));  
     int val = rand()% 7;
 
@@ -86,31 +81,31 @@ void Board::newTetriminos() {
     switch (val)
     {
     case 0:
-        b = new O;
+        nextTetromino = new O;
         break;
         
     case 1:
-        b = new I;
+        nextTetromino = new I;
         break;
         
     case 2:
-        b = new L;
+        nextTetromino = new L;
         break;
         
     case 3:
-        b = new J;
+        nextTetromino = new J;
         break;
         
     case 4:
-        b = new S;
+        nextTetromino = new S;
         break;
         
     case 5:
-        b = new T;
+        nextTetromino = new T;
         break;
         
     case 6:
-        b = new Z;
+        nextTetromino = new Z;
         break;
     
     default:
@@ -174,7 +169,7 @@ void Board::update(string move = "update") {
     
     b->Continue(board);
             
-    // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetrimino
+    // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetromino + Check if the game is over
     if (b->cannotGoDown) {
         vector<pair<int,int>> pos = b->GetAllPoints(initialx, initialy, currentRotation);
 
@@ -184,7 +179,11 @@ void Board::update(string move = "update") {
         }
 
         cout << "Creating new block\n";
+        if (b)
+            delete b;
+        b = nextTetromino;
         newTetriminos(); 
+
         if(b->isCollided(board, b->x, b->y, b->currentRotation)){
             overState = true;
             cout << "Game over" << endl;

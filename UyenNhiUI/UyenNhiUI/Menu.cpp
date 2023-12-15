@@ -198,7 +198,9 @@ void displayPlayScreen(RenderWindow& window, string mode) {
                 if (tetrisStack[row][col].filled) {
                     cout << row << ", " << col << tetrisStack[row][col].color << endl;
                     singleGhostBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
+
                     singleGhostBlock.setColor(Color(255,255,255,100));
+
                     singleGhostBlock.setPosition(LEFTPADDING + 40 * col, TOPPADDING + 40 * row);
                     window.draw(singleGhostBlock);
                 }

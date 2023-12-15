@@ -14,6 +14,7 @@ class Board{
         bool overState = false;
         
         Tetriminos* b = new S;
+        Tetriminos* nextTetromino;
         void moveRowDown(int row, int rows);
 
     public:
@@ -25,16 +26,14 @@ class Board{
         vector<vector<Pixel>> drawGhostPiece();
         void newTetriminos();
         void update(string move);
-        /*vector<vector<Pixel>> GetBoard() {
-            vector<vector<Pixel>> toDraw = 
-
-            vector<pair<int, int>> pos = b->GetAllPoints(initialx, initialy, currentRotation);
-            for (int i = 0; i < pos.size(); i++) {
-                toDraw[pos[i].first][pos[i].second] = true;
-            }
-            return board;
-        }*/
         
+        Tetriminos* GetCurrentTetromino() {
+            return b;
+        }
+        Tetriminos* GetNextTetromino() {
+            return nextTetromino;
+        }
+
         void clearRow(int row);
         bool isRowFull(int row);
         int clearFullRows();
