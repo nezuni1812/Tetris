@@ -174,7 +174,8 @@ void Board::update(string move = "update") {
     int lineDeleted = clearFullRows();
     updateScore(lineDeleted);
 
-    changeExistingStack();
+    if (hardMode)
+        changeExistingStack();
     
     if (b->timeSinceEpochMillisec() - updateTime > 1000) {
         updateTime = b->timeSinceEpochMillisec();
