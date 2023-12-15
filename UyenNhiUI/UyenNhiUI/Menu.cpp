@@ -164,7 +164,7 @@ string displayChooseMode(RenderWindow& window) {
 }
 
 // Function to display the Play screen
-void displayPlayScreen(RenderWindow& window, string mode) {
+void displayPlayScreen(RenderWindow& window, string hardMode) {
     // Load and display the "Play" screen image
     const int LEFTPADDING = 43;
     const int TOPPADDING = 25;
@@ -180,7 +180,8 @@ void displayPlayScreen(RenderWindow& window, string mode) {
     music_play.setVolume(35.0);
     music_play.play();
 
-    Board board;
+    bool goHard = hardMode == "HARD";
+    Board board(goHard);
 
     vector<Texture> blockTexture;
     blockTexture.resize(8);
@@ -278,16 +279,21 @@ void displayPlayScreen(RenderWindow& window, string mode) {
         nextPieceTexture.loadFromFile(nextPieceFileName.c_str());
         Sprite nextImage;
         nextImage.setTexture((nextPieceTexture));
-        nextImage.setPosition(500, 80);
+        nextImage.setPosition(500, 180);
         window.draw(nextImage);
 
-        Text score;
-        score.setString(to_string(board.GetPoints()));
-        score.setPosition(500, 350);
-        score.setFont(fontPlay);
-        score.setCharacterSize(30);
-        score.setFillColor(Color(255, 37, 1, 255));
-        window.draw(score);
+        Text uiText;
+        uiText.setFont(fontPlay);
+        uiText.setCharacterSize(30);
+        uiText.setFillColor(Color(255, 37, 1, 255));
+
+        uiText.setPosition(500, 60);
+        uiText.setString(to_string(board.GetTimePlayed()/1000));
+        window.draw(uiText);
+
+        uiText.setPosition(500, 380);
+        uiText.setString(to_string(board.GetPoints()));
+        window.draw(uiText);
 
         window.display();
 
@@ -296,7 +302,7 @@ void displayPlayScreen(RenderWindow& window, string mode) {
     }
 
     //Move to Lose screen
-    displayLoseScreen(window);
+    displayLoseScreen(window, board.GetPoints());
 }
 
 

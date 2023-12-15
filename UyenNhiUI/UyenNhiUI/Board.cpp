@@ -1,14 +1,20 @@
 #include "Board.h"
 
-Board::Board(){
+Board::Board(bool hardMode) {
     rows = 20;
     cols = 10;
     cellSize = 30;
+    this->hardMode = hardMode;
     board = vector<vector<Pixel>>(20, (vector<Pixel>(10, 0)));
-    
+    startTime = timeSinceEpochMillisec();
+
+    if (hardMode)
+        changeExistingStack();
+
     newTetriminos();
     b = nextTetromino;
     newTetriminos();
+    b->SetWaitTime(1);
 }
 
 void Board::createBoard(){
@@ -40,11 +46,6 @@ vector<vector<Pixel>> Board::draw(bool drawOut = false){
         toDraw[pos[i].first][pos[i].second].filled = true;
         toDraw[pos[i].first][pos[i].second].color = b->GetColor();
     }
-
-    /*pos = b->GetGhostTetromino(board);
-    for (int i = 0; i < pos.size(); i++) {
-        toDraw[pos[i].first][pos[i].second] = true;
-    }*/
 
     // Paint the toDraw matrix out
     if (drawOut) {
@@ -113,6 +114,38 @@ void Board::newTetriminos() {
     }
     
 }
+
+void Board::updateBlockWaitTime() {
+    if (score < 20)
+        b->SetWaitTime(1);
+    else if (score < 50)
+        b->SetWaitTime(2);
+    else if (score < 80)
+        b->SetWaitTime(3);
+    else
+        b->SetWaitTime(4);
+}
+
+void Board::changeExistingStack() {
+    int rowsToMessUp;
+    if (score < 20)
+        rowsToMessUp = 3;
+    else if (score < 40)
+        rowsToMessUp = 5;
+    else if (score < 70)
+        rowsToMessUp = 6;
+    else
+        rowsToMessUp = 10;
+
+    for (int i = 0; i < rowsToMessUp; i++){
+        board[rows - 1 - i] = vector<Pixel>(10, 1);
+
+        int missingSpot = rand()%2 + 1;
+        for (int j = 0; j < missingSpot; j++)
+            board[rows - 1 - i][rand()%10] = Pixel(0);
+    }
+}
+
 
 void Board::update(string move = "update") {
     int key = -1;
@@ -184,7 +217,16 @@ void Board::update(string move = "update") {
         b = nextTetromino;
         newTetriminos(); 
 
-        if(b->isCollided(board, b->x, b->y, b->currentRotation)){
+        if (score < 20)
+            b->SetWaitTime(1);
+        else if (score < 50)
+            b->SetWaitTime(2);
+        else if (score < 80)
+            b->SetWaitTime(3);
+        else
+            b->SetWaitTime(4);
+
+        if (b->isCollided(board, b->x, b->y, b->currentRotation)){
             overState = true;
             cout << "Game over" << endl;
         }
@@ -241,13 +283,13 @@ int Board::clearFullRows(){
 int Board::updateScore(int lineDeleted){
     switch(lineDeleted){
         case 1:
-            score += 100;
+            score += 10;
             break;
         case 2:
-            score += 300;
+            score += 30;
             break;
         case 3: 
-            score += 500;
+            score += 50;
             break;
         default:
             break;
