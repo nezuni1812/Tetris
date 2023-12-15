@@ -1,6 +1,71 @@
 ﻿#include "Menu.h"
 #include "Board.h"
 
+void displayLoginScreen(RenderWindow& window, vector<Player>& list) {
+    Texture loginTexture;
+    loginTexture.loadFromFile("Resources/game_screen/login.png");
+    Sprite login(loginTexture);
+
+    sf::Font font;
+    if (!font.loadFromFile("Resources/font/level-up.otf")) {
+        cout << "Error loading font." << endl;
+        return;
+    }
+
+    Text usernameText;
+    usernameText.setFont(font);
+    usernameText.setCharacterSize(27);
+    usernameText.setFillColor(Color(76, 37, 1, 255));
+    usernameText.setPosition(220, 337);
+
+    Text sign;
+    sign.setFont(font);
+    sign.setCharacterSize(22);
+    sign.setFillColor(Color::Red);
+    sign.setPosition(55, 400);
+
+    string username;
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            else if (event.type == sf::Event::TextEntered) {
+                if (event.text.unicode == 13) { // Enter key
+                    // Check if username is not empty and does not exceed 15 characters
+                    if (!username.empty() && username.length() <= 15) {
+                        list.push_back(Player(username, 0, 0));
+                        titleScreen(window, list);
+                        return;
+                    }
+                    else if (username.length() > 15) {
+                        sign.setString("Username should not exceed 15 characters!");
+                    }
+                }
+                else if (((event.text.unicode >= 48) && (event.text.unicode <= 57))
+                    || ((event.text.unicode >= 65) && (event.text.unicode <= 90))
+                    || ((event.text.unicode >= 97) && (event.text.unicode <= 122))) {
+                    username += static_cast<char>(event.text.unicode);
+                }
+                else if (event.text.unicode == 8) { // Backspace
+                    if (!username.empty()) {
+                        username.pop_back();
+                    }
+                }
+
+                usernameText.setString(username);
+            }
+        }
+        window.clear();
+        window.draw(login);
+        window.draw(sign);
+        window.draw(usernameText);
+        window.display();
+    }
+}
+
 void displayLoseScreen(RenderWindow& window, int score = 0) {
     // Load and display the "Lose" screen image
     Texture gameOverTexture;
@@ -340,7 +405,7 @@ void displayLeaderboardScreen(RenderWindow& window, vector<Player> list, string 
     }
 }
 
-void titleScreen(RenderWindow& window) {
+void titleScreen(RenderWindow& window, vector<Player>& list) {
     Texture* titleScreenTexture = new Texture();
     titleScreenTexture->loadFromFile("Resources/game_screen/menu.png");
     Sprite titleScreen(*titleScreenTexture);
@@ -355,7 +420,6 @@ void titleScreen(RenderWindow& window) {
     music_move.openFromFile("Resources/music/move.wav");
     music_move.setVolume(35.0);
 
-    vector<Player> list = inputPlayerInfo();
     Text menuTexts[MENU_ITEM_COUNT];
 
     Font fontPlay;
