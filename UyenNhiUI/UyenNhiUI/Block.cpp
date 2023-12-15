@@ -69,7 +69,7 @@ void Tetriminos::LastUpdate() {
 bool Tetriminos::Continue(vector<vector<Pixel>> board) {
     unsigned long long timeNow = timeSinceEpochMillisec();
     // cout << (timeNow - lastUpdate) << " time has passed\n";
-    if ((timeNow - lastUpdate) < 400)
+    if ((timeNow - lastUpdate) < waitTime)
         return false;
         
     if (!GoDown(board))

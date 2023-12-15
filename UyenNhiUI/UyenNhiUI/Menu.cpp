@@ -296,7 +296,7 @@ void displayPlayScreen(RenderWindow& window, string mode) {
     }
 
     //Move to Lose screen
-    displayLoseScreen(window);
+    displayLoseScreen(window, board.GetPoints());
 }
 
 

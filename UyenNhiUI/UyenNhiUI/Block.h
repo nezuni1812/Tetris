@@ -25,6 +25,7 @@ private:
     vector<vector<vector<pair<int, int>>>> wallKickCase;
     int color;
     char type;
+    unsigned long long waitTime;
 public:
     unsigned long long lastUpdate;
     Tetriminos(int x, int y, int color, char type);
@@ -35,6 +36,16 @@ public:
     
     void InitWallKick(int type);
     void SetColor();
+    void SetWaitTime(int wait) {
+        if (wait <= 1)
+            this->waitTime = 1200;
+        else if (wait <= 2)
+            this->waitTime = 900;
+        else if (wait <= 3)
+            this->waitTime = 600;
+        else
+            this->waitTime = 290;
+    }
     
     bool isCollided(vector<vector<Pixel>> board, int _x, int _y, int _currentState);
     bool isObstructedDown() {
