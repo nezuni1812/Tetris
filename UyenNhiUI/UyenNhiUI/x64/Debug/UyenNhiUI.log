@@ -1,4 +1,17 @@
 ﻿  Board.cpp
 C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Board.cpp(77,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Board.cpp(199,47): warning C4244: '=': conversion from 'uint64_t' to 'int', possible loss of data
+  Menu.cpp
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(57,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(190,78): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(190,57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(204,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(204,62): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(260,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(278,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(294,45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Player.cpp
+  main.cpp
+  Generating Code...
+C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\UyenNhiUI\Menu.cpp(99): warning C4715: 'displayChooseMode': not all control paths return a value
   UyenNhiUI.vcxproj -> C:\Users\phkhng\Documents\Code\OOP\Tetris\UyenNhiUI\x64\Debug\UyenNhiUI.exe
