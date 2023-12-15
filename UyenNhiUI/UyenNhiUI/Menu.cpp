@@ -130,6 +130,9 @@ void displayPlayScreen(RenderWindow& window, string mode) {
     Sprite singleBlock;
     Sprite singleGhostBlock;
 
+    Font fontPlay;
+    fontPlay.loadFromFile("Resources/font/level-up.otf");
+
     Music music_move;
     music_move.openFromFile("Resources/music/move.wav");
     music_move.setVolume(35.0);
@@ -181,7 +184,6 @@ void displayPlayScreen(RenderWindow& window, string mode) {
         board.update("update");
 
         vector<vector<Pixel>> tetrisStack = board.draw(false);
-
         for (int row = 0; row < tetrisStack.size(); row++)
             for (int col = 0; col < tetrisStack[row].size(); col++)
                 if (tetrisStack[row][col].filled) {
@@ -192,7 +194,6 @@ void displayPlayScreen(RenderWindow& window, string mode) {
                 }
 
         tetrisStack = board.drawGhostPiece();
-
         for (int row = 0; row < tetrisStack.size(); row++)
             for (int col = 0; col < tetrisStack[row].size(); col++)
                 if (tetrisStack[row][col].filled) {
@@ -205,9 +206,28 @@ void displayPlayScreen(RenderWindow& window, string mode) {
                     window.draw(singleGhostBlock);
                 }
 
+        string nextPieceFileName = "Resources/tetromino_texture/";
+        nextPieceFileName += board.GetNextTetromino()->GetType();
+        nextPieceFileName += ".png";
+        Texture nextPieceTexture;
+        nextPieceTexture.loadFromFile(nextPieceFileName.c_str());
+        Sprite nextImage;
+        nextImage.setTexture((nextPieceTexture));
+        nextImage.setPosition(500, 80);
+        window.draw(nextImage);
+
+        Text score;
+        score.setString(to_string(board.GetPoints()));
+        score.setPosition(500, 350);
+        score.setFont(fontPlay);
+        score.setCharacterSize(30);
+        score.setFillColor(Color(255, 37, 1, 255));
+        window.draw(score);
+
+        window.display();
+
         if (board.isOver())
             break;
-        window.display();
     }
 
     //Move to Lose screen
