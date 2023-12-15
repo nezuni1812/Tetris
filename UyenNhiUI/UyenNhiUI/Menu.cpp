@@ -289,7 +289,6 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
 
                 else if (event.key.code == Keyboard::J) {
                     music_move.play();
-                    music_move.play();
                     board.update("anticlock");
                 }
             }
