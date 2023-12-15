@@ -241,12 +241,16 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
                     idx %= 10;
                     if (inputs[idx].first == 6)
                         idx++;
+                    else
+                        idx = 0;
                 }
 
                 else if (event.key.code == Keyboard::A) {
                     idx %= 10;
                     if (inputs[idx].first == 7)
                         idx++;
+                    else
+                        idx = 0;
                 }
 
                 else if (event.key.code == Keyboard::Left) {
@@ -254,6 +258,8 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
                     idx %= 10;
                     if (inputs[idx].first == 3)
                         idx++;
+                    else
+                        idx = 0;
                     board.update("left");
                 }
 
@@ -262,6 +268,8 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
                     idx %= 10;
                     if (inputs[idx].first == 4)
                         idx++;
+                    else
+                        idx = 0;
                     board.update("right");
                 }
 
@@ -270,11 +278,14 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
                     idx %= 10;
                     if (inputs[idx].first == 2)
                         idx++;
+                    else
+                        idx = 0;
                     board.update("down");
                 }
 
                 else if (event.key.code == Keyboard::Space) {
                     music_move.play();
+                    idx = 0;
                     board.update("drop");
                 }
 
@@ -283,12 +294,14 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
                     idx %= 10;
                     if (inputs[idx].first == 1)
                         idx++;
-
+                    else
+                        idx = 0;
                     board.update("clock");
                 }
 
                 else if (event.key.code == Keyboard::J) {
                     music_move.play();
+                    idx = 0;
                     board.update("anticlock");
                 }
             }
