@@ -111,7 +111,7 @@ void displayPlayScreen(sf::RenderWindow& window) {
                 if (tetrisStack[row][col].filled) {
                     cout << row << ", " << col << tetrisStack[row][col].color << endl;
                     singleGhostBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
-                    singleGhostBlock.setColor(sf::Color(255,255,255,100));
+                    singleGhostBlock.setColor(sf::Color(255,255,255,118));
                     singleGhostBlock.setPosition(LEFTPADDING + 40 * col, TOPPADDING + 40 * row);
                     window.draw(singleGhostBlock);
                 }
