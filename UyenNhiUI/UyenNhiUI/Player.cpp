@@ -1,36 +1,41 @@
 #include "Player.h"
 
-Player::Player() : name(""), point(0) {}
-Player::Player(string name, int point) : name(name), point(point) {}
+Player::Player() : name(""), pointEASY(0), pointHARD(0) {}
+Player::Player(string name, int pointEASY, int pointHARD) : name(name), pointEASY(pointEASY), pointHARD(pointHARD){}
 string Player::getName() {
     return name;
 }
-int Player::getPoint() {
-    return point;
+int Player::getPointEASY() {
+    return pointEASY;
+}
+int Player::getPointHARD() {
+    return pointHARD;
 }
 
+bool Player::compareByPointEASY(const Player& a, const Player& b) {
+    return a.pointEASY > b.pointEASY;
+}
 
-/*void writeFile(Player* listPlayer, int n) {
+bool Player::compareByPointHARD(const Player& a, const Player& b) {
+    return a.pointHARD > b.pointHARD;
+}
+
+/*void writeFile(vector<Player> listPlayer) {
     fstream fs;
     string filename = "Resources/record.txt";
-    fs.open(filename, ios::in);
-    if (!fs.is_open()) {
-        cout << "Can't open file " << filename;
-        return;
-    }
-    fs >> n;
-    fs.close();
-
     fs.open(filename, ios::out);
     if (!fs.is_open()) {
         cout << "Can't open file " << filename;
         return;
     }
-    fs << n << endl;
 
-    for (int i = 0; i < n; i++) {
+    fs << listPlayer.size() << endl;
+
+    for (int i = 0; i < listPlayer.size(); i++) {
         fs << listPlayer[i].getName() << " ";
-        fs << listPlayer[i].getPoint() << " ";
+        fs << listPlayer[i].getPointEASY() << " ";
+        fs << listPlayer[i].getPointHARD() << " ";
+        fs << "\n";
     }
     fs.close();
 }*/
@@ -44,17 +49,25 @@ vector<Player> inputPlayerInfo() {
         cout << "Can't open file ";
         return listPlayer;
     }
+
     int n;
-    fs >> n; // Read number of players
+    fs >> n; 
 
     string tempName;
-    string tempPoint;
+    string tempPointEASY, tempPointHARD;
     for (int i = 0; i < n; i++) {
         fs >> tempName;
-        fs >> tempPoint;
-        listPlayer.push_back(Player(tempName, stoi(tempPoint)));
-        //fs.ignore();
+        fs >> tempPointEASY;
+        fs >> tempPointHARD;
+        listPlayer.push_back(Player(tempName, stoi(tempPointEASY), stoi(tempPointHARD)));
     }
     fs.close();
     return listPlayer;
+}
+
+void sortPlayersEASY(vector<Player>& list) {
+    sort(list.begin(), list.end(), Player::compareByPointEASY);
+}
+void sortPlayersHARD(vector<Player>& list) {
+    sort(list.begin(), list.end(), Player::compareByPointHARD);
 }

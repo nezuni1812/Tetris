@@ -225,6 +225,7 @@ void Board::moveRowDown(int row, int rows){
 
 //delete a row using all 3 functions above
 int Board::clearFullRows(){
+    //delete_line.play();
     int completed = 0;
     for(int row = rows - 1; row >=0; row--){
         if(isRowFull(row)){
