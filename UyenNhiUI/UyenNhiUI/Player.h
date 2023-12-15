@@ -20,8 +20,8 @@ public:
     int getPointHARD();
     void setPointEASY(int pointEASY);
     void setPointHARD(int pointHARD);
-    static bool compareByPointEASY(const Player& a, const Player& b);
-    static bool compareByPointHARD(const Player& a, const Player& b);
+    friend bool compareByPointEASY(const Player& a, const Player& b);
+    friend bool compareByPointHARD(const Player& a, const Player& b);
 };
 
 void writeFile(vector<Player> listPlayer);
