@@ -164,6 +164,13 @@ void Board::update(string move = "update") {
         b->Rotate(board, false);
     
     b->Continue(board);
+
+    int lineDeleted = clearFullRows();
+    updateScore(lineDeleted);
+    
+    if (b->timeSinceEpochMillisec() - updateTime > 1000) {
+        updateTime = b->timeSinceEpochMillisec();
+    }
             
     // If the Tetrominos cannot go down anymore -> Merge it with the board + Create new Tetromino + Check if the game is over
     if (b->isObstructedDown()) {
@@ -194,22 +201,12 @@ void Board::update(string move = "update") {
             cout << "Game over" << endl;
         }
     }
-    
-
-    int lineDeleted = clearFullRows();
-    updateScore(lineDeleted);
-    
-    if (b->timeSinceEpochMillisec() - updateTime > 1000) {
-        updateTime = b->timeSinceEpochMillisec();
-    }
 }
 
-Tetriminos* Board::GetCurrentTetromino() {
-    return b;
-}
 
-Tetriminos* Board::GetNextTetromino() {
-    return nextTetromino;
+
+char Board::GetNextTetrominoType() {
+    return nextTetromino->GetType();
 }
 
 int Board::GetPoints() {

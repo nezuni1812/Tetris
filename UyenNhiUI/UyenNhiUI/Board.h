@@ -34,10 +34,9 @@ class Board{
         void changeExistingStack();
         void update(string move);
         
-        Tetriminos* GetCurrentTetromino();
-        Tetriminos* GetNextTetromino();
         int GetPoints();
         uint64_t GetTimePlayed();
+        char GetNextTetrominoType();
 
         void clearRow(int row);
         bool isRowFull(int row);
