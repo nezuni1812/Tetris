@@ -190,7 +190,7 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
     music_play.setVolume(35.0);
     music_play.play();
 
-    bool goHard = hardMode == "HARD";
+    bool goHard = (hardMode == "HARD");
     Board board(goHard);
 
     vector<Texture> blockTexture;
@@ -282,14 +282,15 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
                     window.draw(singleGhostBlock);
                 }
 
+        //Next piece sprite
         string nextPieceFileName = "Resources/tetromino_texture/";
-        nextPieceFileName += board.GetNextTetromino()->GetType();
+        nextPieceFileName += board.GetNextTetrominoType();
         nextPieceFileName += ".png";
         Texture nextPieceTexture;
         nextPieceTexture.loadFromFile(nextPieceFileName.c_str());
         Sprite nextImage;
         nextImage.setTexture((nextPieceTexture));
-        nextImage.setPosition(500, 164);
+        nextImage.setPosition(502, 80);
         window.draw(nextImage);
 
         Text uiText;
@@ -297,11 +298,13 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
         uiText.setCharacterSize(30);
         uiText.setFillColor(Color(255, 37, 1, 255));
 
-        uiText.setPosition(500, 60);
+        //Time played
+        uiText.setPosition(580, 326);
         uiText.setString(to_string(board.GetTimePlayed()/1000));
         window.draw(uiText);
 
-        uiText.setPosition(500, 380);
+        //Score
+        uiText.setPosition(610, 402);
         uiText.setString(to_string(board.GetPoints()));
         window.draw(uiText);
 
