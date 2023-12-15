@@ -175,14 +175,15 @@ string displayChooseMode(RenderWindow& window) {
 
 // Function to display the Play screen
 void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& list) {
-    // Load and display the "Play" screen image
     const int LEFTPADDING = 42;
     const int TOPPADDING = 25;
 
     vector<pair<int, bool>> inputs = {make_pair(1, false), make_pair(1, false), make_pair(2, false), make_pair(2, false), make_pair(3, false), make_pair(4, false), make_pair(3, false), make_pair(4, false), make_pair(6, false), make_pair(7, false)};
     int idx = 0;
 
-    static string backgroundTrack = "Resources/music/play_background2.wav";
+    static string backgroundTrack = "Resources/music/play_background.wav";
+
+    // Load and display the "Play" screen image
 
     Texture playScreenTexture;
     playScreenTexture.loadFromFile("Resources/game_screen/game_screen.png");
@@ -190,7 +191,9 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
     window.clear();
 
     Music music_play;
+
     music_play.openFromFile(backgroundTrack);
+
     music_play.setLoop(true);
     music_play.setVolume(35.0);
     music_play.play();
@@ -295,10 +298,10 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
         }
 
         if (idx == 10) {
-            if (backgroundTrack == "Resources/music/play_background2.wav")
+            if (backgroundTrack == "Resources/music/play_background.wav")
                 backgroundTrack = "Resources/music/untitled.ogg";
             else
-                backgroundTrack = "Resources/music/play_background2.wav";
+                backgroundTrack = "Resources/music/play_background.wav";
             music_play.openFromFile(backgroundTrack);
             music_play.play();
             idx = 0;
@@ -368,11 +371,13 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
             list[list.size() - 1].setPointHARD(board.GetPoints());
     }
 
+    //Ghi danh sách xuống File
+    writeFile(list);
+
     //Move to Lose screen
     music_play.stop();
     displayLoseScreen(window, board.GetPoints());
 }
-
 
 // Function to display the Instruction screen
 void displayInstructionScreen(RenderWindow& window) {
