@@ -1,7 +1,6 @@
-6
-Han 100 11
-Nhi 313 12
-Khang 182 13
-Trung 429 13
-AAA 111 13
-YYY 26 14
+5
+Han 100 4 
+Nhi 313 12 
+Khang 182 1 
+Trung 429 12 
+uyennhixinhxan 10 0 

@@ -12,6 +12,13 @@ int Player::getPointHARD() {
     return pointHARD;
 }
 
+void Player::setPointEASY(int pointEASY) {
+    this->pointEASY = pointEASY;
+}
+void Player::setPointHARD(int pointHARD) {
+    this->pointHARD = pointHARD;
+}
+
 bool Player::compareByPointEASY(const Player& a, const Player& b) {
     return a.pointEASY > b.pointEASY;
 }
@@ -20,7 +27,7 @@ bool Player::compareByPointHARD(const Player& a, const Player& b) {
     return a.pointHARD > b.pointHARD;
 }
 
-/*void writeFile(vector<Player> listPlayer) {
+void writeFile(vector<Player> listPlayer) {
     fstream fs;
     string filename = "Resources/record.txt";
     fs.open(filename, ios::out);
@@ -38,7 +45,7 @@ bool Player::compareByPointHARD(const Player& a, const Player& b) {
         fs << "\n";
     }
     fs.close();
-}*/
+}
 
 vector<Player> inputPlayerInfo() {
     vector<Player> listPlayer;

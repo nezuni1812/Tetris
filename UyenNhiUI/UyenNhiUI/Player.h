@@ -18,11 +18,13 @@ public:
     string getName();
     int getPointEASY();
     int getPointHARD();
+    void setPointEASY(int pointEASY);
+    void setPointHARD(int pointHARD);
     static bool compareByPointEASY(const Player& a, const Player& b);
     static bool compareByPointHARD(const Player& a, const Player& b);
 };
 
-//void writeFile(vector<Player> listPlayer);
+void writeFile(vector<Player> listPlayer);
 vector<Player> inputPlayerInfo();
 void sortPlayersEASY(std::vector<Player>& list);
 void sortPlayersHARD(std::vector<Player>& list);

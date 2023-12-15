@@ -41,7 +41,12 @@ void displayLoginScreen(RenderWindow& window, vector<Player>& list) {
                         return;
                     }
                     else if (username.length() > 15) {
+                        sign.setPosition(55, 400);
                         sign.setString("Username should not exceed 15 characters!");
+                    }
+                    else if (username.empty()) {
+                        sign.setPosition(148, 400);
+                        sign.setString("Username should not be empty!");
                     }
                 }
                 else if (((event.text.unicode >= 48) && (event.text.unicode <= 57))
@@ -74,13 +79,18 @@ void displayLoseScreen(RenderWindow& window, int score = 0) {
     Font fontPlay;
     fontPlay.loadFromFile("Resources/font/level-up.otf");
 
-    // NUM
+    Music music;
+    music.openFromFile("Resources/music/lose_game.wav");
+    music.setVolume(35.0);
+    music.setLoop(true);
+    music.play();
+
     Text Score;
     Score.setFont(fontPlay);
     Score.setString("SCORE: " + to_string(score));
     Score.setCharacterSize(40);
     Score.setFillColor(Color(255, 245, 91, 255));
-    Score.setPosition(263, 492);
+    Score.setPosition(239, 492);
 
     Sprite gameOver(gameOverTexture);
     window.draw(gameOver);
@@ -164,7 +174,7 @@ string displayChooseMode(RenderWindow& window) {
 }
 
 // Function to display the Play screen
-void displayPlayScreen(RenderWindow& window, string hardMode) {
+void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& list) {
     // Load and display the "Play" screen image
     const int LEFTPADDING = 42;
     const int TOPPADDING = 25;
@@ -301,7 +311,17 @@ void displayPlayScreen(RenderWindow& window, string hardMode) {
             break;
     }
 
+    if (hardMode == "EASY") {
+        if (list[list.size() - 1].getPointEASY() < board.GetPoints())
+            list[list.size() - 1].setPointEASY(board.GetPoints());
+    }
+    else if (hardMode == "HARD") {
+        if (list[list.size() - 1].getPointHARD() < board.GetPoints())
+            list[list.size() - 1].setPointHARD(board.GetPoints());
+    }
+
     //Move to Lose screen
+    music_play.stop();
     displayLoseScreen(window, board.GetPoints());
 }
 
@@ -458,6 +478,7 @@ void titleScreen(RenderWindow& window, vector<Player>& list) {
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
+                writeFile(list);
                 window.close();
             }
             else if (event.type == Event::KeyPressed) {
@@ -472,7 +493,7 @@ void titleScreen(RenderWindow& window, vector<Player>& list) {
                     switch (selectedItem) {
                     case 0: //Nút play
                         music.stop();
-                        displayPlayScreen(window, displayChooseMode(window));
+                        displayPlayScreen(window, displayChooseMode(window), list);
                         music.play();
                         break;
                     case 1: //Nút Leaderboard
@@ -482,7 +503,7 @@ void titleScreen(RenderWindow& window, vector<Player>& list) {
                         displayInstructionScreen(window);
                         break;
                     case 3: //Nút Exit
-                        std::cout << "Exit selected!" << std::endl;
+                        writeFile(list);
                         window.close();
                         break;
                     }

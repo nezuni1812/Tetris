@@ -19,7 +19,7 @@ const string MODE_CHOOSE[MODE_COUNT] = { "EASY", "HARD" };
 void displayLoginScreen(sf::RenderWindow& window, vector<Player>& list);
 void displayLoseScreen(sf::RenderWindow& window, int score);
 string displayChooseMode(RenderWindow& window);
-void displayPlayScreen(sf::RenderWindow& window, string mode);
+void displayPlayScreen(sf::RenderWindow& window, string mode, vector<Player>& list);
 void displayInstructionScreen(sf::RenderWindow& window);
 void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list, string mode);
 
