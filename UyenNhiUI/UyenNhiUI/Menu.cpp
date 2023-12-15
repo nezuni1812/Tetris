@@ -279,12 +279,12 @@ void displayPlayScreen(RenderWindow& window, string hardMode) {
         nextPieceTexture.loadFromFile(nextPieceFileName.c_str());
         Sprite nextImage;
         nextImage.setTexture((nextPieceTexture));
-        nextImage.setPosition(500, 80);
+        nextImage.setPosition(500, 180);
         window.draw(nextImage);
 
         Text score;
         score.setString(to_string(board.GetPoints()));
-        score.setPosition(500, 350);
+        score.setPosition(500, 380);
         score.setFont(fontPlay);
         score.setCharacterSize(30);
         score.setFillColor(Color(255, 37, 1, 255));

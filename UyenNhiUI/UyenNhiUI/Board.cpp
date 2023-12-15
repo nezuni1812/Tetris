@@ -127,9 +127,9 @@ void Board::updateBlockWaitTime() {
 void Board::changeExistingStack() {
     int rowsToMessUp;
     if (score < 20)
-        rowsToMessUp = 2;
+        rowsToMessUp = 3;
     else if (score < 40)
-        rowsToMessUp = 4;
+        rowsToMessUp = 5;
     else if (score < 70)
         rowsToMessUp = 6;
     else
