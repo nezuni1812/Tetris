@@ -24,9 +24,10 @@ private:
     const int WIDTH = 10;
     vector<vector<vector<pair<int, int>>>> wallKickCase;
     int color;
+    char type;
 public:
     unsigned long long lastUpdate;
-    Tetriminos(int x, int y, int color);
+    Tetriminos(int x, int y, int color, char type);
     int currentRotation = 0;
     int x = -1, y = -1;
     vector<vector<vector<Pixel>>> states;
@@ -54,12 +55,15 @@ public:
     int GetColor() {
         return color;
     }
+    char GetType() {
+        return type;
+    }
 };
 
 
 class O: public Tetriminos {
 public:
-    O(int x = 4, int y = 0) : Tetriminos(x, y, 7) {
+    O(int x = 4, int y = 0) : Tetriminos(x, y, 7, 'O') {
         InitWallKick(0);
         states.resize(4);
         
@@ -76,7 +80,7 @@ public:
 
 class I: public Tetriminos {
 public:
-    I(int x = 4, int y = 0) : Tetriminos(x, y, 1) {
+    I(int x = 4, int y = 0) : Tetriminos(x, y, 1, 'I') {
         InitWallKick(1);
         states.resize(4);
         
@@ -111,7 +115,7 @@ public:
 
 class J: public Tetriminos {
 public:
-    J(int x = 4, int y = 0) : Tetriminos(x, y, 2) {
+    J(int x = 4, int y = 0) : Tetriminos(x, y, 2, 'J') {
         InitWallKick(0);
         states.resize(4);
         
@@ -143,7 +147,7 @@ public:
 
 class L: public Tetriminos {
 public:
-    L(int x = 4, int y = 0) : Tetriminos(x, y, 3) {
+    L(int x = 4, int y = 0) : Tetriminos(x, y, 3, 'L') {
         InitWallKick(0);
         states.resize(4);
         
@@ -176,7 +180,7 @@ public:
 
 class S: public Tetriminos {
 public:
-    S(int x = 4, int y = 0) : Tetriminos(x, y, 4) {
+    S(int x = 4, int y = 0) : Tetriminos(x, y, 4, 'S') {
         InitWallKick(0);
         states.resize(4);
         
@@ -207,7 +211,7 @@ public:
 
 class T: public Tetriminos {
 public:
-    T(int x = 4, int y = 0) : Tetriminos(x, y, 5) {
+    T(int x = 4, int y = 0) : Tetriminos(x, y, 5, 'T') {
         InitWallKick(0);
         states.resize(4);
         
@@ -239,7 +243,7 @@ public:
 
 class Z: public Tetriminos {
 public:
-    Z(int x = 5, int y = 0) : Tetriminos(x, y, 6) {
+    Z(int x = 5, int y = 0) : Tetriminos(x, y, 6, 'Z') {
         InitWallKick(0);
         states.resize(4);
         

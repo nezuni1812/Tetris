@@ -1,6 +1,6 @@
 #include "Block.h"
 
-Tetriminos::Tetriminos(int x, int y, int color) : x(x), y(y), color(color) {
+Tetriminos::Tetriminos(int x, int y, int color, char type) : x(x), y(y), color(color), type(type) {
     lastUpdate = timeSinceEpochMillisec();
 };
 
@@ -123,9 +123,11 @@ bool Tetriminos::GoDown(vector<vector<Pixel>> board) {
 
 bool Tetriminos::HardDrop(vector<vector<Pixel>> board) {
     while (GoDown(board)) {
-        if (isCollided(board, x, y, currentRotation))
+        if (isCollided(board, x, y, currentRotation)) {
             return true;
+        }
     }
+    cannotGoDown = true;
     return false;
 }
 

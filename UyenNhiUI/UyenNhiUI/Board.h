@@ -12,6 +12,8 @@ class Board{
         int cellSize;
         int updateTime;
         bool overState = false;
+        int currentPoint;
+        int score = 0;
         
         Tetriminos* b = new S;
         Tetriminos* nextTetromino;
@@ -33,6 +35,9 @@ class Board{
         Tetriminos* GetNextTetromino() {
             return nextTetromino;
         }
+        int GetPoints() {
+            return score;
+        }
 
         void clearRow(int row);
         bool isRowFull(int row);
@@ -40,5 +45,4 @@ class Board{
         int updateScore(int lineDeleted);
         bool isOver();
 
-        int score = 0;
 };
