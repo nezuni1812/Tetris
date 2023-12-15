@@ -332,6 +332,9 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
             list[list.size() - 1].setPointHARD(board.GetPoints());
     }
 
+    //Ghi kết quả xuống File
+    writeFile(list);
+
     //Move to Lose screen
     music_play.stop();
     displayLoseScreen(window, board.GetPoints());
