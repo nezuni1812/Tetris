@@ -179,13 +179,18 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
     const int LEFTPADDING = 42;
     const int TOPPADDING = 25;
 
+    vector<pair<int, bool>> inputs = {make_pair(1, false), make_pair(1, false), make_pair(2, false), make_pair(2, false), make_pair(3, false), make_pair(4, false), make_pair(3, false), make_pair(4, false), make_pair(6, false), make_pair(7, false)};
+    int idx = 0;
+
+    static string backgroundTrack = "Resources/music/play_background2.wav";
+
     Texture playScreenTexture;
     playScreenTexture.loadFromFile("Resources/game_screen/game_screen.png");
     Sprite playScreen(playScreenTexture);
     window.clear();
 
     Music music_play;
-    music_play.openFromFile("Resources/music/play_background2.wav");
+    music_play.openFromFile(backgroundTrack);
     music_play.setLoop(true);
     music_play.setVolume(35.0);
     music_play.play();
@@ -229,32 +234,58 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
                     return;
                 }
 
-                else if (event.key.code == Keyboard::P) {
-                    isPause = !isPause;
+                else if (event.key.code == Keyboard::B) {
+                    idx %= 10;
+                    if (inputs[idx].first == 6)
+                        idx++;
+                }
+
+                else if (event.key.code == Keyboard::A) {
+                    idx %= 10;
+                    if (inputs[idx].first == 7)
+                        idx++;
                 }
 
                 else if (event.key.code == Keyboard::Left) {
+                    music_move.play();
+                    idx %= 10;
+                    if (inputs[idx].first == 3)
+                        idx++;
                     board.update("left");
                 }
 
                 else if (event.key.code == Keyboard::Right) {
+                    music_move.play();
+                    idx %= 10;
+                    if (inputs[idx].first == 4)
+                        idx++;
                     board.update("right");
                 }
 
                 else if (event.key.code == Keyboard::Down) {
+                    music_move.play();
+                    idx %= 10;
+                    if (inputs[idx].first == 2)
+                        idx++;
                     board.update("down");
                 }
 
                 else if (event.key.code == Keyboard::Space) {
+                    music_move.play();
                     board.update("drop");
                 }
 
                 else if (event.key.code == Keyboard::Up || event.key.code == Keyboard::K) {
                     music_move.play();
+                    idx %= 10;
+                    if (inputs[idx].first == 1)
+                        idx++;
+
                     board.update("clock");
                 }
 
                 else if (event.key.code == Keyboard::J) {
+                    music_move.play();
                     music_move.play();
                     board.update("anticlock");
                 }
@@ -263,9 +294,14 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
 
         }
 
-        if (isPause) {
-            window.display();
-            continue;
+        if (idx == 10) {
+            if (backgroundTrack == "Resources/music/play_background2.wav")
+                backgroundTrack = "Resources/music/untitled.ogg";
+            else
+                backgroundTrack = "Resources/music/play_background2.wav";
+            music_play.openFromFile(backgroundTrack);
+            music_play.play();
+            idx = 0;
         }
 
         board.update("update");
