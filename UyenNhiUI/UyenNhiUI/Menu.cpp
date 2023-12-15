@@ -213,6 +213,8 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
     music_move.openFromFile("Resources/music/move.wav");
     music_move.setVolume(35.0);
 
+    bool isPause = false;
+
     while (window.isOpen()) {
         window.draw(playScreen);
         Event event;
@@ -225,6 +227,10 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
 
                 if (event.key.code == Keyboard::Escape) {
                     return;
+                }
+
+                else if (event.key.code == Keyboard::P) {
+                    isPause = !isPause;
                 }
 
                 else if (event.key.code == Keyboard::Left) {
@@ -257,13 +263,17 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
 
         }
 
+        if (isPause) {
+            window.display();
+            continue;
+        }
+
         board.update("update");
 
         vector<vector<Pixel>> tetrisStack = board.draw(false);
         for (int row = 0; row < tetrisStack.size(); row++)
             for (int col = 0; col < tetrisStack[row].size(); col++)
                 if (tetrisStack[row][col].filled) {
-                    cout << row << ", " << col << tetrisStack[row][col].color << endl;
                     singleBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
                     singleBlock.setPosition(LEFTPADDING + 40*col, TOPPADDING + 40*row);
                     window.draw(singleBlock);
@@ -273,7 +283,6 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
         for (int row = 0; row < tetrisStack.size(); row++)
             for (int col = 0; col < tetrisStack[row].size(); col++)
                 if (tetrisStack[row][col].filled) {
-                    cout << row << ", " << col << tetrisStack[row][col].color << endl;
                     singleGhostBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
 
                     singleGhostBlock.setColor(Color(255,255,255,100));

@@ -115,35 +115,41 @@ void Board::newTetriminos() {
 
 //Change the time for a block to fall by on block line
 void Board::updateBlockWaitTime() {
-    if (score < 20)
+    if (score < 40)
         b->SetWaitTime(1);
-    else if (score < 50)
+    else if (score < 90)
         b->SetWaitTime(2);
-    else if (score < 80)
+    else if (score < 140)
         b->SetWaitTime(3);
     else
-        b->SetWaitTime(4);
+        b->SetWaitTime(200);
 }
 
 //Populate some of the board stack randomly (For Hard Mode)
 void Board::changeExistingStack() {
-    int rowsToMessUp;
-    if (score < 20)
-        rowsToMessUp = 3;
-    else if (score < 40)
-        rowsToMessUp = 5;
-    else if (score < 70)
-        rowsToMessUp = 6;
-    else
-        rowsToMessUp = 10;
+    static long cnt = 0;
+    if (GetTimePlayed() / 1000 < cnt + 10)
+        return;
 
-    for (int i = 0; i < rowsToMessUp; i++){
-        board[rows - 1 - i] = vector<Pixel>(10, 1);
+    //Save current time in seconds
+    cnt = GetTimePlayed() / 1000;
 
-        int missingSpot = rand()%2 + 1;
-        for (int j = 0; j < missingSpot; j++)
-            board[rows - 1 - i][rand()%10] = Pixel(0);
-    }
+    //If the top row contains any filled pixel -> Game over and return
+    for (int i = 0; i < cols; i++)
+        if (board[0][i].filled) {
+            overState = true;
+            return;
+        }
+
+    //Move every row upwards
+    for (int i = 1; i < rows; i++)
+        board[i - 1] = board[i] ;
+
+    //Make new bottom row
+    board[rows - 1] = vector<Pixel>(10, 1);
+    int missingSpot = rand()%2 + 1;
+    for (int j = 0; j < missingSpot; j++)
+        board[rows - 1][rand()%10] = Pixel(0);
 }
 
 
@@ -167,6 +173,8 @@ void Board::update(string move = "update") {
 
     int lineDeleted = clearFullRows();
     updateScore(lineDeleted);
+
+    changeExistingStack();
     
     if (b->timeSinceEpochMillisec() - updateTime > 1000) {
         updateTime = b->timeSinceEpochMillisec();
@@ -181,7 +189,6 @@ void Board::update(string move = "update") {
             board[pos[i].first][pos[i].second].color = b->GetColor();
         }
 
-        cout << "Creating new block\n";
         /*if (b)
             delete b;*/
         b = nextTetromino;
