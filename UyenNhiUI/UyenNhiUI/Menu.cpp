@@ -1,22 +1,34 @@
 ﻿#include "Menu.h"
 #include "Board.h"
 
-void displayLoseScreen(sf::RenderWindow& window, int score = 0) {
+void displayLoseScreen(RenderWindow& window, int score = 0) {
     // Load and display the "Lose" screen image
-    sf::Texture gameOverTexture;
-    gameOverTexture.loadFromFile("Resources/lose_screen.png");
+    Texture gameOverTexture;
+    gameOverTexture.loadFromFile("Resources/game_screen/lose_screen.png");
 
-    sf::Sprite gameOver(gameOverTexture);
+    Font fontPlay;
+    fontPlay.loadFromFile("Resources/font/level-up.otf");
+
+    // NUM
+    Text Score;
+    Score.setFont(fontPlay);
+    Score.setString("SCORE: " + to_string(score));
+    Score.setCharacterSize(40);
+    Score.setFillColor(Color(255, 245, 91, 255));
+    Score.setPosition(263, 492);
+
+    Sprite gameOver(gameOverTexture);
     window.draw(gameOver);
+    window.draw(Score);
     window.display();
     while (window.isOpen()) {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            else if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Escape) {
+            else if (event.type == Event::KeyPressed) {
+                if (event.key.code == Keyboard::Escape) {
                     return;
                 }
             }
@@ -24,66 +36,141 @@ void displayLoseScreen(sf::RenderWindow& window, int score = 0) {
     }
 }
 
+string displayChooseMode(RenderWindow& window) {
+    Texture chooseModeTexture;
+    chooseModeTexture.loadFromFile("Resources/game_screen/choose_mode.png");
+    Sprite chooseMode(chooseModeTexture);
+
+    Font fontPlay;
+    fontPlay.loadFromFile("Resources/font/TypefaceMarioWorldPixelFilledRegular-rgVMx.ttf");
+
+    Music music_move;
+    music_move.openFromFile("Resources/music/move.wav");
+    music_move.setVolume(35.0);
+
+    Text mode[MODE_COUNT];
+    for (int i = 0; i < MODE_COUNT; i++) {
+        mode[i].setFont(fontPlay);
+        mode[i].setString(MODE_CHOOSE[i]);
+        mode[i].setCharacterSize(22);
+        mode[i].setFillColor(Color(255, 245, 91, 255));
+        mode[i].setPosition(327, 358 + i*78);
+    }    
+
+    int selectedItem = 0;
+
+    while (window.isOpen()) {
+        Event event;
+        string res;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window.close();
+            }
+            else if (event.type == Event::KeyPressed) {
+                music_move.play();
+                if (event.key.code == Keyboard::Up) {
+                    selectedItem = (selectedItem - 1 + MODE_COUNT) % MODE_COUNT;
+                }
+                else if (event.key.code == Keyboard::Down) {
+                    selectedItem = (selectedItem + 1) % MODE_COUNT;
+                }
+                else if (event.key.code == Keyboard::Enter) {
+                    switch (selectedItem) {
+                    case 0: //Mode Easy
+                        res = "EASY";
+                        return res;
+                    case 1: //Mode Hard
+                        res = "HARD";
+                        return res;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < MODE_COUNT; ++i) {
+            mode[i].setFillColor(i == selectedItem ? Color::Red : Color(76, 37, 1, 255));
+        }
+        window.draw(chooseMode);
+        for (int i = 0; i < MODE_COUNT; i++) {
+            window.draw(mode[i]);
+        }
+        window.display();
+    }
+}
+
 // Function to display the Play screen
-void displayPlayScreen(sf::RenderWindow& window) {
+void displayPlayScreen(RenderWindow& window, string mode) {
     // Load and display the "Play" screen image
     const int LEFTPADDING = 43;
     const int TOPPADDING = 25;
 
-    sf::Texture playScreenTexture;
-    playScreenTexture.loadFromFile("Resources/game_screen.png");
-    sf::Sprite playScreen(playScreenTexture);
+    Texture playScreenTexture;
+    playScreenTexture.loadFromFile("Resources/game_screen/game_screen.png");
+    Sprite playScreen(playScreenTexture);
     window.clear();
+
+    Music music_play;
+    music_play.openFromFile("Resources/music/play_background2.wav");
+    music_play.setLoop(true);
+    music_play.setVolume(35.0);
+    music_play.play();
 
     Board board;
 
-    vector<sf::Texture> blockTexture;
+    vector<Texture> blockTexture;
     blockTexture.resize(8);
-    blockTexture[0].loadFromFile("Resources/grey.png");
-    blockTexture[1].loadFromFile("Resources/cyan.png");
-    blockTexture[2].loadFromFile("Resources/blue.png");
-    blockTexture[3].loadFromFile("Resources/amber.png");
-    blockTexture[4].loadFromFile("Resources/green.png");
-    blockTexture[5].loadFromFile("Resources/purple.png");
-    blockTexture[6].loadFromFile("Resources/red.png");
-    blockTexture[7].loadFromFile("Resources/yellow.png");
-    sf::Sprite singleBlock;
-    sf::Sprite singleGhostBlock;
+    blockTexture[0].loadFromFile("Resources/tetromino_texture/grey.png");
+    blockTexture[1].loadFromFile("Resources/tetromino_texture/cyan.png");
+    blockTexture[2].loadFromFile("Resources/tetromino_texture/blue.png");
+    blockTexture[3].loadFromFile("Resources/tetromino_texture/amber.png");
+    blockTexture[4].loadFromFile("Resources/tetromino_texture/green.png");
+    blockTexture[5].loadFromFile("Resources/tetromino_texture/purple.png");
+    blockTexture[6].loadFromFile("Resources/tetromino_texture/red.png");
+    blockTexture[7].loadFromFile("Resources/tetromino_texture/yellow.png");
+    Sprite singleBlock;
+    Sprite singleGhostBlock;
+
+    Music music_move;
+    music_move.openFromFile("Resources/music/move.wav");
+    music_move.setVolume(35.0);
 
     while (window.isOpen()) {
         window.draw(playScreen);
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
 
-            else if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Escape) {
+            else if (event.type == Event::KeyPressed) {
+
+                if (event.key.code == Keyboard::Escape) {
                     return;
                 }
 
-                else if (event.key.code == sf::Keyboard::Left) {
+                else if (event.key.code == Keyboard::Left) {
                     board.update("left");
                 }
 
-                else if (event.key.code == sf::Keyboard::Right) {
+                else if (event.key.code == Keyboard::Right) {
                     board.update("right");
                 }
 
-                else if (event.key.code == sf::Keyboard::Down) {
+                else if (event.key.code == Keyboard::Down) {
                     board.update("down");
                 }
 
-                else if (event.key.code == sf::Keyboard::Space) {
+                else if (event.key.code == Keyboard::Space) {
                     board.update("drop");
                 }
 
-                else if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::J) {
+                else if (event.key.code == Keyboard::Up || event.key.code == Keyboard::K) {
+                    music_move.play();
                     board.update("clock");
                 }
 
-                else if (event.key.code == sf::Keyboard::K) {
+                else if (event.key.code == Keyboard::J) {
+                    music_move.play();
                     board.update("anticlock");
                 }
             }
@@ -111,7 +198,9 @@ void displayPlayScreen(sf::RenderWindow& window) {
                 if (tetrisStack[row][col].filled) {
                     cout << row << ", " << col << tetrisStack[row][col].color << endl;
                     singleGhostBlock.setTexture(blockTexture[tetrisStack[row][col].color]);
-                    singleGhostBlock.setColor(sf::Color(255,255,255,118));
+
+                    singleGhostBlock.setColor(Color(255,255,255,100));
+
                     singleGhostBlock.setPosition(LEFTPADDING + 40 * col, TOPPADDING + 40 * row);
                     window.draw(singleGhostBlock);
                 }
@@ -127,21 +216,21 @@ void displayPlayScreen(sf::RenderWindow& window) {
 
 
 // Function to display the Instruction screen
-void displayInstructionScreen(sf::RenderWindow& window) {
+void displayInstructionScreen(RenderWindow& window) {
     // Load and display the "Instruction" screen image
-    sf::Texture instructionScreenTexture;
-    instructionScreenTexture.loadFromFile("Resources/instruction.png");
-    sf::Sprite instructionScreen(instructionScreenTexture);
+    Texture instructionScreenTexture;
+    instructionScreenTexture.loadFromFile("Resources/game_screen/instruction.png");
+    Sprite instructionScreen(instructionScreenTexture);
     window.draw(instructionScreen);
     window.display();
     while (window.isOpen()) {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            else if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Escape) {
+            else if (event.type == Event::KeyPressed) {
+                if (event.key.code == Keyboard::Escape) {
                     return;
                 }
             }
@@ -150,46 +239,58 @@ void displayInstructionScreen(sf::RenderWindow& window) {
 }
 
 // Function to display the Leaderboard screen
-void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
+void displayLeaderboardScreen(RenderWindow& window, vector<Player> list, string mode) {
     // Load and display the "Leaderboard" screen image
-    sf::Texture leaderboardScreenTexture;
-    leaderboardScreenTexture.loadFromFile("Resources/leaderboard.png");
-    sf::Sprite leaderboardScreen(leaderboardScreenTexture);
+    Texture leaderboardScreenTexture;
+    leaderboardScreenTexture.loadFromFile("Resources/game_screen/leaderboard.png");
+    Sprite leaderboardScreen(leaderboardScreenTexture);
 
-    int size = 2;
+    int size = 5;
     // Load font
-    sf::Font fontPlay;
-    fontPlay.loadFromFile("Resources/level-up.otf");
+    Font fontPlay;
+    fontPlay.loadFromFile("Resources/font/level-up.otf");
 
     // NUM
-    std::vector<sf::Text> index(size);
+    std::vector<Text> index(size);
     for (int i = 0; i < size; i++) {
         index[i].setFont(fontPlay);
         index[i].setString(to_string(i + 1) + ".");
         index[i].setCharacterSize(30);
-        index[i].setFillColor(sf::Color(76, 37, 1, 255));
+        index[i].setFillColor(Color(76, 37, 1, 255));
         index[i].setPosition(70, 350 + i * 50);
     }
-    window.clear(sf::Color::Black);
+    window.clear(Color::Black);
+
+    if (mode == "EASY") {
+        sortPlayersEASY(list);
+    }
+    else if (mode == "HARD") {
+        sortPlayersHARD(list);
+    }
 
     // NAME
-    std::vector<sf::Text> NamePlayer(size);
+    std::vector<Text> NamePlayer(size);
     for (int i = 0; i < size; i++) {
         NamePlayer[i].setFont(fontPlay);
         NamePlayer[i].setString(list[i].getName());
         NamePlayer[i].setCharacterSize(30);
-        NamePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
+        NamePlayer[i].setFillColor(Color(76, 37, 1, 255));
         NamePlayer[i].setPosition(125, 350 + i * 50);
     }
-    window.clear(sf::Color::Black);
+    window.clear(Color::Black);
 
     // SCORE
-    std::vector<sf::Text> ScorePlayer(size);
+    std::vector<Text> ScorePlayer(size);
     for (int i = 0; i < size; i++) {
         ScorePlayer[i].setFont(fontPlay);
-        ScorePlayer[i].setString(to_string(list[i].getPoint()));
+        if (mode == "EASY") {
+            ScorePlayer[i].setString(to_string(list[i].getPointEASY()));
+        }
+        else if (mode == "HARD") {
+            ScorePlayer[i].setString(to_string(list[i].getPointHARD()));
+        }
         ScorePlayer[i].setCharacterSize(30);
-        ScorePlayer[i].setFillColor(sf::Color(76, 37, 1, 255));
+        ScorePlayer[i].setFillColor(Color(76, 37, 1, 255));
         ScorePlayer[i].setPosition(550, 350 + i * 50);
     }
 
@@ -205,13 +306,13 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
 
     window.display();
     while (window.isOpen()) {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            else if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Escape) {
+            else if (event.type == Event::KeyPressed) {
+                if (event.key.code == Keyboard::Escape) {
                     return;
                 }
             }
@@ -221,28 +322,35 @@ void displayLeaderboardScreen(sf::RenderWindow& window, vector<Player> list) {
 
 void titleScreen(RenderWindow& window) {
     Texture* titleScreenTexture = new Texture();
-    titleScreenTexture->loadFromFile("Resources/menu.png");
+    titleScreenTexture->loadFromFile("Resources/game_screen/menu.png");
     Sprite titleScreen(*titleScreenTexture);
 
-    //Inline initialize vector
+    Music music;
+    music.openFromFile("Resources/music/intro.wav");
+    music.setLoop(true);
+    music.setVolume(35.0);
+    music.play();
+
+    Music music_move;
+    music_move.openFromFile("Resources/music/move.wav");
+    music_move.setVolume(35.0);
+
     vector<Player> list = inputPlayerInfo();
+    Text menuTexts[MENU_ITEM_COUNT];
 
-    // Create text objects for menu items
-    sf::Text menuTexts[MENU_ITEM_COUNT];
-
-    // Load font
-    sf::Font fontPlay;
-    fontPlay.loadFromFile("Resources/TypefaceMarioWorldPixelFilledRegular-rgVMx.ttf");
+    Font fontPlay;
+    fontPlay.loadFromFile("Resources/font/TypefaceMarioWorldPixelFilledRegular-rgVMx.ttf");
 
     //Cài đặt cho chữ Play
     menuTexts[0].setFont(fontPlay);
     menuTexts[0].setString(MENU_ITEMS[0]);
     menuTexts[0].setCharacterSize(30);
-    menuTexts[0].setFillColor(sf::Color(76, 37, 1, 255));
+    menuTexts[0].setFillColor(Color(76, 37, 1, 255));
     menuTexts[0].setPosition(326, 445);
 
-    sf::Font font;
-    font.loadFromFile("Resources/PixemonTrialRegular-p7nLK.ttf");
+    //Cài đặt cho các chữ còn lại
+    Font font;
+    font.loadFromFile("Resources/font/PixemonTrialRegular-p7nLK.ttf");
     menuTexts[1].setPosition(310, 537 + 0 * 65);
     menuTexts[2].setPosition(319, 537 + 1 * 65);
     menuTexts[3].setPosition(366, 537 + 2 * 65);
@@ -251,37 +359,39 @@ void titleScreen(RenderWindow& window) {
         menuTexts[i].setFont(font);
         menuTexts[i].setString(MENU_ITEMS[i]);
         menuTexts[i].setCharacterSize(25);
-        menuTexts[i].setFillColor(sf::Color(76, 37, 1, 255));
+        menuTexts[i].setFillColor(Color(76, 37, 1, 255));
     }
 
     int selectedItem = 0; // Index of the currently selected menu item
 
     while (window.isOpen()) {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            else if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Up) {
+            else if (event.type == Event::KeyPressed) {
+                music_move.play();
+                if (event.key.code == Keyboard::Up) {
                     selectedItem = (selectedItem - 1 + MENU_ITEM_COUNT) % MENU_ITEM_COUNT;
                 }
-                else if (event.key.code == sf::Keyboard::Down) {
+                else if (event.key.code == Keyboard::Down) {
                     selectedItem = (selectedItem + 1) % MENU_ITEM_COUNT;
                 }
-                else if (event.key.code == sf::Keyboard::Enter) {
-                    // Perform action based on the selected item
+                else if (event.key.code == Keyboard::Enter) {
                     switch (selectedItem) {
-                    case 0:
-                        displayPlayScreen(window);
+                    case 0: //Nút play
+                        music.stop();
+                        displayPlayScreen(window, displayChooseMode(window));
+                        music.play();
                         break;
-                    case 1:
-                        displayLeaderboardScreen(window, list);
+                    case 1: //Nút Leaderboard
+                        displayLeaderboardScreen(window, list, displayChooseMode(window));
                         break;
-                    case 2:
+                    case 2: //Nút Instruction
                         displayInstructionScreen(window);
                         break;
-                    case 3:
+                    case 3: //Nút Exit
                         std::cout << "Exit selected!" << std::endl;
                         window.close();
                         break;
@@ -292,15 +402,11 @@ void titleScreen(RenderWindow& window) {
 
         // Update text color based on selection
         for (int i = 0; i < MENU_ITEM_COUNT; ++i) {
-            menuTexts[i].setFillColor(i == selectedItem ? sf::Color::Red : sf::Color(76, 37, 1, 255));
+            menuTexts[i].setFillColor(i == selectedItem ? Color::Red : Color(76, 37, 1, 255));
         }
 
-        window.clear(sf::Color::Black);
-
-        // Draw title screen image
+        window.clear(Color::Black);
         window.draw(titleScreen);
-
-        // Draw menu items
         for (int i = 0; i < MENU_ITEM_COUNT; ++i) {
             window.draw(menuTexts[i]);
         }

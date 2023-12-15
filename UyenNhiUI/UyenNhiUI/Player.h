@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include <vector>
 
 using namespace std;
@@ -9,14 +10,19 @@ using namespace std;
 class Player {
 private:
     string name;
-    int point;
+    int pointEASY;
+    int pointHARD;
 public:
     Player();
-    Player(string name, int point);
+    Player(string name, int pointEASY, int pointHARD);
     string getName();
-    int getPoint();
+    int getPointEASY();
+    int getPointHARD();
+    static bool compareByPointEASY(const Player& a, const Player& b);
+    static bool compareByPointHARD(const Player& a, const Player& b);
 };
 
-/*void writeFile(Player* listPlayer, int n);*/
-
+//void writeFile(vector<Player> listPlayer);
 vector<Player> inputPlayerInfo();
+void sortPlayersEASY(std::vector<Player>& list);
+void sortPlayersHARD(std::vector<Player>& list);
