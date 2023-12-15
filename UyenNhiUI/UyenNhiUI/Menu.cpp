@@ -185,7 +185,7 @@ void displayPlayScreen(RenderWindow& window, string hardMode, vector<Player>& li
     window.clear();
 
     Music music_play;
-    music_play.openFromFile("Resources/music/play_background2.wav");
+    music_play.openFromFile("Resources/music/play_background.wav");
     music_play.setLoop(true);
     music_play.setVolume(35.0);
     music_play.play();
