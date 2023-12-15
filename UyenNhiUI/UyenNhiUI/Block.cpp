@@ -8,16 +8,18 @@ bool Tetriminos::isCollided(vector<vector<Pixel>> board, int _x, int _y, int _cu
     vector<pair<int,int>> pos = GetAllPoints(_x, _y, _currentState);
     
     for (int i = 0; i < pos.size(); i++) {
-        // cout << pos[i].first << ", " << pos[i].second << endl;
         if (pos[i].first >= HEIGHT || pos[i].first < 0 || 
             pos[i].second >= WIDTH || pos[i].second < 0 ||
             board[pos[i].first][pos[i].second].filled != 0) {
-                // cout << "Cant go\n";
                 return true;
             }
     }
             
     return false;
+}
+
+bool Tetriminos::isObstructedDown() {
+    return cannotGoDown;
 }
 
 void Tetriminos::InitWallKick(int type) {
@@ -56,19 +58,25 @@ void Tetriminos::SetColor() {
             for (int z = 0; z < states[i][j].size(); z++)
                 states[i][j][z].color = color;
 }
+void Tetriminos::SetWaitTime(int wait) {
+    if (wait <= 1)
+        this->waitTime = 1200;
+    else if (wait <= 2)
+        this->waitTime = 900;
+    else if (wait <= 3)
+        this->waitTime = 600;
+    else
+        this->waitTime = 290;
+
+}
 
 uint64_t Tetriminos::timeSinceEpochMillisec() {
     using namespace std::chrono;
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
-void Tetriminos::LastUpdate() {
-    lastUpdate = timeSinceEpochMillisec();
-}
-
 bool Tetriminos::Continue(vector<vector<Pixel>> board) {
     unsigned long long timeNow = timeSinceEpochMillisec();
-    // cout << (timeNow - lastUpdate) << " time has passed\n";
     if ((timeNow - lastUpdate) < waitTime)
         return false;
         
@@ -76,9 +84,6 @@ bool Tetriminos::Continue(vector<vector<Pixel>> board) {
         cannotGoDown = true;
             
     lastUpdate = timeSinceEpochMillisec();
-    // cout << "Updated time\n";
-    // int n;
-    // cin >> n;
     return true;
 }
 
@@ -153,7 +158,18 @@ bool Tetriminos::GoRight(vector<vector<Pixel>> board) {
     return true;
 };  
 
-vector<pair<int,int>> Tetriminos::GetAllPoints(int _x = -100, int _y = -100, int _currentRotation = -100) {
+int Tetriminos::GetX() {
+    return x;
+}
+int Tetriminos::GetY() {
+    return y;
+}
+int Tetriminos::GetCurrentRotation() {
+    return currentRotation;
+}
+
+//Return position of each filled pixel of a block in x, y coordinate
+vector<pair<int,int>> Tetriminos::GetAllPoints(int _x, int _y, int _currentRotation) {
     if (_x == -100) {
         _x = x;
         _y = y;
@@ -169,7 +185,7 @@ vector<pair<int,int>> Tetriminos::GetAllPoints(int _x = -100, int _y = -100, int
     return points;
 }
 
-vector<pair<int, int>> Tetriminos::GetGhostTetromino(vector<vector<Pixel>> board) {
+vector<pair<int, int>> Tetriminos::GetGhostTetrominoPoints(vector<vector<Pixel>> board) {
     int ghostY = y;
 
     while (!isCollided(board, x, ghostY + 1, currentRotation)) {
@@ -178,4 +194,11 @@ vector<pair<int, int>> Tetriminos::GetGhostTetromino(vector<vector<Pixel>> board
 
     vector<pair<int, int>> ghostPoints = GetAllPoints(x, ghostY, currentRotation);
     return ghostPoints;
+}
+
+int Tetriminos::GetColor() {
+    return color;
+}
+char Tetriminos::GetType() {
+    return type;
 }

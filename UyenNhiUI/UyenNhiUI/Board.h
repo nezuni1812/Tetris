@@ -21,16 +21,11 @@ class Board{
         Tetriminos* b = new S;
         Tetriminos* nextTetromino;
         void moveRowDown(int row, int rows);
+        vector<vector<Pixel>> board;
 
     public:
         Board(bool hardMode = false);
-        vector<vector<Pixel>> board;
-        uint64_t timeSinceEpochMillisec() {
-            using namespace std::chrono;
-            return duration_cast<std::chrono::milliseconds>(system_clock::now().time_since_epoch()).count();
-        }
-        void createBoard();
-        void print();
+        uint64_t timeSinceEpochMillisec();
         vector<vector<Pixel>> draw(bool drawOut);
         vector<vector<Pixel>> drawGhostPiece();
         void newTetriminos();
@@ -38,18 +33,10 @@ class Board{
         void changeExistingStack();
         void update(string move);
         
-        Tetriminos* GetCurrentTetromino() {
-            return b;
-        }
-        Tetriminos* GetNextTetromino() {
-            return nextTetromino;
-        }
-        int GetPoints() {
-            return score;
-        }
-        uint64_t GetTimePlayed() {
-            return timeSinceEpochMillisec() - startTime;
-        }
+        Tetriminos* GetCurrentTetromino();
+        Tetriminos* GetNextTetromino();
+        int GetPoints();
+        uint64_t GetTimePlayed();
 
         void clearRow(int row);
         bool isRowFull(int row);

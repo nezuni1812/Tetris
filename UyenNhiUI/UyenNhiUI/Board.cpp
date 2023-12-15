@@ -17,21 +17,9 @@ Board::Board(bool hardMode) {
     b->SetWaitTime(1);
 }
 
-void Board::createBoard(){
-    // for(int row = 0; row < rows; row++){
-    //     for(int col = 0; col < cols; col++){
-    //         board[row][col] = 0;
-    //     }
-    // }
-}
-
-void Board::print(){
-    // for(int row = 0; row < rows; row++){
-    //     for(int col = 0; col < cols; col++){
-    //         cout << board[row][col];
-    //     }
-    //     cout << "\n";
-    // }
+uint64_t Board::timeSinceEpochMillisec() {
+    using namespace std::chrono;
+    return duration_cast<std::chrono::milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
 vector<vector<Pixel>> Board::draw(bool drawOut = false){
@@ -41,7 +29,7 @@ vector<vector<Pixel>> Board::draw(bool drawOut = false){
     toDraw = board;
 
     // Transfer all points in current tetromino to toDraw matrix
-    vector<pair<int,int>> pos = b->GetAllPoints(initialx,initialy,currentRotation);
+    vector<pair<int,int>> pos = b->GetAllPoints();
     for (int i = 0; i < pos.size(); i++) {
         toDraw[pos[i].first][pos[i].second].filled = true;
         toDraw[pos[i].first][pos[i].second].color = b->GetColor();
@@ -65,7 +53,7 @@ vector<vector<Pixel>> Board::draw(bool drawOut = false){
 vector<vector<Pixel>> Board::drawGhostPiece() {
     vector<vector<Pixel>> toDraw = board;
 
-    vector<pair<int, int>> pos = b->GetGhostTetromino(board);
+    vector<pair<int, int>> pos = b->GetGhostTetrominoPoints(board);
     for (int i = 0; i < pos.size(); i++) {
         toDraw[pos[i].first][pos[i].second].filled = true;
         toDraw[pos[i].first][pos[i].second].color = b->GetColor();
@@ -148,16 +136,6 @@ void Board::changeExistingStack() {
 
 
 void Board::update(string move = "update") {
-    int key = -1;
-            
-    // A non blocking input (If there is no input -> skip and go to next line)
-    if (_kbhit()){
-        key = _getch();
-        // cout << "Key: " << key << "\n";
-    }
-    
-    if (move == "" && key == 0 || key == 224)
-        key = _getch();
 
     if (move == "left")
         b->GoLeft(board);
@@ -172,39 +150,11 @@ void Board::update(string move = "update") {
     else if (move == "anticlock")
         b->Rotate(board, false);
     
-    switch (key) {
-        case 75:
-            cout << "Case 1\n";
-            b->GoLeft(board);
-            break;
-            
-        case 77:
-            cout << "Case 3\n";
-            b->GoRight(board);
-            break;
-            
-        case 72:
-            cout << "Flip clock wise\n";
-            b->Rotate(board, 1);
-            break;
-            
-        case 80:
-            cout << "Go down\n";
-            b->GoDown(board);
-            break;
-
-        case 6:
-            cout << "Flip anti clock wise\n";
-            b->Rotate(board, 0);
-            break;
-
-    }
-    
     b->Continue(board);
             
     // If the Tetriminos cannot go down anymore -> Merge it with the board + Create new Tetromino + Check if the game is over
-    if (b->cannotGoDown) {
-        vector<pair<int,int>> pos = b->GetAllPoints(initialx, initialy, currentRotation);
+    if (b->isObstructedDown()) {
+        vector<pair<int,int>> pos = b->GetAllPoints();
 
         for (int i = 0; i < pos.size(); i++) {
             board[pos[i].first][pos[i].second] = true;
@@ -226,7 +176,7 @@ void Board::update(string move = "update") {
         else
             b->SetWaitTime(4);
 
-        if (b->isCollided(board, b->x, b->y, b->currentRotation)){
+        if (b->isCollided(board, b->GetX(), b->GetY(), b->GetCurrentRotation())) {
             overState = true;
             cout << "Game over" << endl;
         }
@@ -234,12 +184,27 @@ void Board::update(string move = "update") {
     
 
     int lineDeleted = clearFullRows();
-    draw();
-    cout << "Score: " << updateScore(lineDeleted) << endl;
+    updateScore(lineDeleted);
     
     if (b->timeSinceEpochMillisec() - updateTime > 1000) {
         updateTime = b->timeSinceEpochMillisec();
     }
+}
+
+Tetriminos* Board::GetCurrentTetromino() {
+    return b;
+}
+
+Tetriminos* Board::GetNextTetromino() {
+    return nextTetromino;
+}
+
+int Board::GetPoints() {
+    return score;
+}
+
+uint64_t Board::GetTimePlayed() {
+    return timeSinceEpochMillisec() - startTime;
 }
 
 //clear row 
@@ -291,6 +256,8 @@ int Board::updateScore(int lineDeleted){
         case 3: 
             score += 50;
             break;
+        case 4:
+            score += 65;
         default:
             break;
     }

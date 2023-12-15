@@ -22,39 +22,27 @@ class Tetriminos {
 private:
     const int HEIGHT = 20;
     const int WIDTH = 10;
-    vector<vector<vector<pair<int, int>>>> wallKickCase;
     int color;
     char type;
-    unsigned long long waitTime;
-public:
-    unsigned long long lastUpdate;
-    Tetriminos(int x, int y, int color, char type);
-    int currentRotation = 0;
     int x = -1, y = -1;
-    vector<vector<vector<Pixel>>> states;
+    int currentRotation = 0;
+    unsigned long long waitTime;
+    unsigned long long lastUpdate;
+    vector<vector<vector<pair<int, int>>>> wallKickCase;
     bool cannotGoDown = false;
+protected:
+    vector<vector<vector<Pixel>>> states;
+public:
+    Tetriminos(int x, int y, int color, char type);
     
     void InitWallKick(int type);
     void SetColor();
-    void SetWaitTime(int wait) {
-        if (wait <= 1)
-            this->waitTime = 1200;
-        else if (wait <= 2)
-            this->waitTime = 900;
-        else if (wait <= 3)
-            this->waitTime = 600;
-        else
-            this->waitTime = 290;
-
-    }
+    void SetWaitTime(int wait);
     
     bool isCollided(vector<vector<Pixel>> board, int _x, int _y, int _currentState);
-    bool isObstructedDown() {
-        return cannotGoDown;
-    }
+    bool isObstructedDown();
     
     uint64_t timeSinceEpochMillisec();
-    void LastUpdate();
     bool Continue(vector<vector<Pixel>> board);
     void Rotate(vector<vector<Pixel>> board, bool clockWise);
     bool GoDown(vector<vector<Pixel>> board);
@@ -62,14 +50,13 @@ public:
     bool GoLeft(vector<vector<Pixel>> board);
     bool GoRight(vector<vector<Pixel>> board);
     
-    vector<pair<int, int>> GetAllPoints(int _x, int _y, int _currentState);
-    vector<pair<int, int>> GetGhostTetromino(vector<vector<Pixel>> board);
-    int GetColor() {
-        return color;
-    }
-    char GetType() {
-        return type;
-    }
+    int GetX();
+    int GetY();
+    int GetCurrentRotation();
+    vector<pair<int, int>> GetAllPoints(int _x = -100, int _y = -100, int _currentRotation = -100);
+    vector<pair<int, int>> GetGhostTetrominoPoints(vector<vector<Pixel>> board);
+    int GetColor();
+    char GetType();
 };
 
 
